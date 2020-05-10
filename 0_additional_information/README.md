@@ -99,3 +99,55 @@ Share images, automate workflows, and more with a free Docker ID:
 For more examples and ideas, visit:
  https://docs.docker.com/get-started/
 ```
+
+In order to uninstall Docker Engine, the Docker Engine, CLI and Contained packages would have to be uninstalled as follows:
+
+```bash
+$ sudo apt-get purge docker-ce docker-ce-cli containerd.io
+```
+
+The images, containers, volumes or customized configuration files are not automatically removed. Even the customized configurations files will have to be manually removed, the images, containes, and volumes can be removed from the system using:
+
+```bash
+$ sudo rm -rf /var/lib/docker
+```
+
+
+### ADE Installation
+After having an operative installation of Docker, it is possible to continue with the Agile Development Environment (ADE) installation, as explained in this [guide](https://ade-cli.readthedocs.io/en/latest/install.html). The first step is to **download the statically-linked binary** from the [releases page](https://gitlab.com/ApexAI/ade-cli/-/releases) of the `ade-cli` project. The [`ade+x86_64`](https://gitlab.com/ApexAI/ade-cli/uploads/85a5af81339fe55555ee412f9a3a734b/ade+x86_64) is the appropiate binary for the assumed system.
+
+The next step is to **install it in the path** of the machine where it is being installed. To do so, it is convenient to rename it to `ade` and install somewhere in the system's `$PATH` variable. In Ubuntu, it is recommended to use `/usr/local/bin`. The `mv` command can be used for this task by using:
+
+```bash
+$ sudo mv ade /usr/local/bin/
+```
+
+Next, the binary should be given **execution permissons**, which is done with `chmod` as follows:
+
+```bash
+$ cd /usr/local/bin/
+$ sudo chmod +x ade
+```
+
+Finally, **the installation can be checked** by executing from wherever in the system the following (which should provide similar outputs to the ones shown:
+
+```bash
+$ which ade
+/usr/local/bin/ade
+
+$ ade --version
+4.1.0
+```
+
+
+In order to update `ade-cli`, `ade update-cli` should be ran. It will ask for confirmation if a new version is available before downloading and replacing it. 
+
+To enable autocompletion, the following should be added to the `.zshrc` or `.bashrc` file of the system:
+
+```bash
+if [ -n "$ZSH_VERSION" ]; then
+    eval "$(_ADE_COMPLETE=source_zsh ade)"
+else
+    eval "$(_ADE_COMPLETE=source ade)"
+fi
+```
