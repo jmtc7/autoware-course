@@ -2,7 +2,7 @@
 In this folder, additional relevant information related to the course, ROS 2 and Autoware is contained.
 
 
-## Introduction to Autoware. Why Autoware.Auto?
+## Why Autoware.Auto?
 Autoware is a software stack maintained by [The Autoware Foundation](https://www.autoware.org/), which goal is to support open-source projects that will enable self-driving mobility. It has many members from both industrial and academical environments. In 2020, there are thee Autoware projects, which are:
 
 - [**Autoware.AI**](http://www.autoware.ai/): It is based in ROS 1. It was the first Autoware project and its goal is to be a R&D platform for autonomous driving. Its main use is in academia.
