@@ -12,15 +12,15 @@ Each folder in this repository contains the notes (in *.md* files) of one of the
 This course is held by [Apex.AI](https://www.apex.ai/autoware-course) and TheConstructSim organized the classes and was in charge of the logistics. Moreover, the following entities were in charge of the course parts listed below:
 
 - Lecture 1: Development Environment: **Apex.AI / StreetScooter**
-- Lecture 2: ROS 2 101: **OSRF**
-- Lecture 3: ROS 2 Tooling: **OSRF**
-- Lecture 4: Platform (HW, RTOS, DDS): **ADLINK**
+- Lecture 2: ROS 2 101: **Open Source Robotics Foundation**
+- Lecture 3: ROS 2 Tooling: **Open Source Robotics Foundation**
+- Lecture 4: Platform (HW, RTOS, DDS): **AD-Link**
 - Lecture 5: Architectures of Autonomous Driving Stacks: **Virtual Vehicle Research Center**
-- Lecture 6: Autoware 101: **AWF**
+- Lecture 6: Autoware 101: **Autoware Foundation**
 - Lecture 7: Object Perception LiDAR: **ApexA.AI**
-- Lecture 8: Object Perception Camera: **TBD**
-- Lecture 9: Object Perception Radar: **TBD**
-- Lecture 10: State Estimation for Localization: **Tier IV / AWF**
+- Lecture 8: Object Perception Camera
+- Lecture 9: Object Perception Radar
+- Lecture 10: State Estimation for Localization: **Autoware Foundation**
 - Lecture 11: LGSVL Simulation: **LGSVL**
 - Lecture 12: HD maps: **Parkopedia**
 - Lecture 13: Motion planning and control: **Embotech**
