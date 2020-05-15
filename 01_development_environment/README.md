@@ -54,7 +54,47 @@ Lectures 2 and 3 will be done by Katherine, from Open Robotics, and will be abou
 Each lesson will contain a theoretical background, programatic examples and systematic examples, so that the students will be able to experiment with the *labs*.
 
 
-## [1.2.1. Quick Start of the Development Environment](https://youtu.be/XTmlhvlmcf8?t=1379)
+## [1.2.1. Development Environment](https://youtu.be/XTmlhvlmcf8?t=1379)
+### ADE Installation
+The development environment that will be used is ADE, which is a wrapper around Docker that allows interaction with Docker (e.g. starting/stopping dockers), easy configurations and versioning of docker volumes. A guide for the installation can be found [here](https://ade-cli.readthedocs.io/en/latest/install.html#requirements), which is basically a Docker installation followed by the following actions:
+
+```bash
+# ADE Installation
+$ cd ${HOME}
+$ mkdir adehome # Create a persistent environment to store the things that must persist between ADE sessions
+$ cd adehome
+$ wget https://gitlab.com/ApexAI/ade-cli/uploads/85a5af81339fe55555ee412f9a3a734b/ade+x86_64 # Fetch ADE binary from GitLab
+$ mv ade+x86_64 ade # Rename it to "ade"
+$ chmod +x ade # Give execution rights
+$ mv ade ~/.local/bin # Move it to a proper location
+$ which ade # Check its location
+$ ade update-cli # Update the ADE Client
+```
+
+Next, in order to enable autocompletion, the following lines should be added to the `.zshrc` or `.bashrc` file of the system:
+
+```bash
+if [ -n "$ZSH_VERSION" ]; then
+    eval "$(_ADE_COMPLETE=source_zsh ade)"
+else
+    eval "$(_ADE_COMPLETE=source ade)"
+fi
+```
+
+Finally, to setup the ADE environment, the following steps should be followed:
+
+```bash
+# ADE Setup
+$ touch .adehome # Create an empty configuration file
+$ git clone --recurse-submodules https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto.git # Clone Autoware.Auto
+$ cd AutowareAuto/
+$ ade start
+$ ade enter
+```
+
+NOTE: when running `ade start`, an error telling that the permisson to connect ot the Docker daemon socket has been denied. As explained [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket), the solution is to create a *docker* group and add the user to it. The error should be fixed after logging out and in again.
+
+### ROS 2 Installation
 
 ---
 
