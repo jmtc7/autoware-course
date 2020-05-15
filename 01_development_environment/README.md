@@ -56,7 +56,7 @@ Each lesson will contain a theoretical background, programatic examples and syst
 
 ## [1.2.1. Development Environment](https://youtu.be/XTmlhvlmcf8?t=1379)
 ### ADE Installation
-The development environment that will be used is ADE, which is a wrapper around Docker that allows interaction with Docker (e.g. starting/stopping dockers), easy configurations and versioning of docker volumes. A guide for the installation can be found [here](https://ade-cli.readthedocs.io/en/latest/install.html#requirements), which is basically a Docker installation followed by the following actions:
+The development environment that will be used is ADE, which is a wrapper around Docker that allows interaction with Docker (e.g. starting/stopping dockers), easy configurations and versioning of docker volumes. A guide for the installation can be found [here](https://ade-cli.readthedocs.io/en/latest/install.html#requirements), which is basically a **Docker installation followed by** the following actions:
 
 ```bash
 # ADE Installation
@@ -81,7 +81,20 @@ else
 fi
 ```
 
-Finally, to setup the ADE environment, the following steps should be followed:
+If the host system has a NVIDIA GPU installed, appart of its driver, it will be necessary to install **NVIDIA Docker**, as explained in its [official repository](sudo apt-install byobu). The commands to execute to install it in Ubuntu/Debian systems are:
+
+```bash
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+
+sudo apt-get update
+sudo apt-get install -y nvidia-container-toolkit
+sudo systemctl restart docker
+
+```
+
+Finally, to **setup the ADE environment**, the following steps should be followed:
 
 ```bash
 # ADE Setup
@@ -94,7 +107,28 @@ $ ade enter
 
 NOTE: when running `ade start`, an error telling that the permisson to connect ot the Docker daemon socket has been denied. As explained [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket), the solution is to create a *docker* group and add the user to it. The error should be fixed after logging out and in again.
 
-### ROS 2 Installation
+### ROS 2 and Autoware.Auto Installation
+Autoware.Auto uses **ROS 2** Dashing, which is already installed inside ADE (installed in /opt/ros/dashing/). The installation can be confirmed by running `ade$ ros2 -h`, and a basic talker/listener example can be executed by using:
+
+```bash
+ade$ ros2 run demo_nodes_cpp talker
+
+ade$ ros2 run demo_nodes_cpp listener
+```
+
+Some additional system packages can be installed inside ADE with the `apt` package manager as follows:
+
+```bash
+ade$ sudo apt update
+ade$ sudo apt install ros-dashing-turtlesim
+ade$ sudo apt install ros-dashing-rqt-*
+ade$ sudo apt-install byobu
+```
+
+NOTE: Between `ade stop` and `ade start`, these installations will be lost. If its persistance is important, they should be placed in the `adehome` directory.
+
+Regarding **Autoware.Auto**
+
 
 ---
 
