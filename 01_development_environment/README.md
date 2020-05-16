@@ -107,7 +107,7 @@ $ ade enter
 
 NOTE: when running `ade start`, an error telling that the permisson to connect ot the Docker daemon socket has been denied. As explained [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket), the solution is to create a *docker* group and add the user to it. The error should be fixed after logging out and in again.
 
-### ROS 2 and Autoware.Auto Installation
+### [ROS 2](https://youtu.be/XTmlhvlmcf8?t=1875) and [Autoware.Auto](https://youtu.be/XTmlhvlmcf8?t=2070) Installations
 Autoware.Auto uses **ROS 2** Dashing, which is already installed inside ADE (installed in /opt/ros/dashing/). The installation can be confirmed by running `ade$ ros2 -h`, and a basic talker/listener example can be executed by using:
 
 ```bash
@@ -127,7 +127,60 @@ ade$ sudo apt-install byobu
 
 NOTE: Between `ade stop` and `ade start`, these installations will be lost. If its persistance is important, they should be placed in the `adehome` directory.
 
-Regarding **Autoware.Auto**
+Regarding **Autoware.Auto**, it is also already installed in the Docker image. The installation will be in `/opt/Autoware.Auto/`, which is constructed as a docker volume. To install it from source, the previously cloned version can be used, alongside with the following sequence of commands:
+
+```bash
+ade$ cd AutowareAuto
+ade$ colcon build
+ade$ colcon test
+ade$ colcon test-result
+```
+
+
+## [1.3.1. Object Detection Demo](https://youtu.be/XTmlhvlmcf8?t=2168)
+It is a LIDAR-based object detection demo. The first necessary thing to do is to download a pre-recorded ***[pcap file](https://drive.google.com/open?id=1vNA009j-tsVVqSeYRCKh_G_tkJQrHvP-)***, which is a collection of UDP packages recorded while driving in Palo Alto. This file should be moved into a folder named `data/`, in the `adehome` directory. Next, the **configuration files** for this lectures should be cloned from the following ApexAI repository (from insider the ADE environment):
+
+```bash
+ade$ git clone https://gitlab.com/ApexAI/autowareclass2020.git ~/autowareclass2020
+```
+
+The next step is to source the Autoware.Auto workspace before each of the commands that will be specified in the next step. This is done by executing the following in the ADE terminal:
+
+```bash
+ade$ source /opt/AutowareAuto/setup.bash
+```
+
+Once having everything setted up, it is possible to **replay the data and launch the ROS 2 nodes** that will process the input pointclouds to create 3D bounding boxes around the detected objects. These are the commands to be executed:
+
+```bash
+# Replay and broadcast the UDP data from the pcap file (adding "-r -1" will replay it in a loop)
+ade$ udpreplay ~/data/route_small_loop_rw-127.0.0.1.pcap
+
+# Launch RViz 2 to visualize the data
+ade$ rviz2 -d /home/${USER}/autowareclass2020/code/src/01_DevelopmentEnvironment/aw_class2020.rviz
+
+# Launch the Velodyne driver to convert the raw LIDAR data into pointclouds
+ade$ ros2 run velodyne_node velodyne_cloud_node_exe __ns:=/lidar_front __params:=/home/${USER}/autowareclass2020/code/src/01_DevelopmentEnvironment/velodyne_node.param.yaml
+
+# Robot State Publisher. Publishes the transforms between the coordinate system of the car and the one of the LIDARs on the roof
+ade$ ros2 run robot_state_publisher robot_state_publisher /opt/AutowareAuto/share/lexus_rx_450h_description/urdf/lexus_rx_450h.urdf
+
+# Point Cloud Transformer. Will transform the pointlouds (in the LIDARs' coordinate frames) to the base coordinate frame of the car
+ade$ ros2 run point_cloud_filter_transform_nodes  point_cloud_filter_transform_node_exe __ns:=/lidar_front __params:=/opt/AutowareAuto/share/point_cloud_filter_transform_nodes/param/vlp16_sim_lexus_filter_transform.param.yaml __node:=filter_transform_vlp16_front
+
+# Ray Ground Classifier differenciates the data corresponding to the ground from the one corresponding to objetcs
+ade$ ros2 run ray_ground_classifier_nodes ray_ground_classifier_cloud_node_exe __ns:=/perception __params:=/opt/AutowareAuto/share/autoware_auto_avp_demo/param/ray_ground_classifier.param.yaml
+
+# Convert the non-ground points into obstacles to be avoided
+ade$ ros2 run  euclidean_cluster_nodes euclidean_cluster_exe __ns:=/perception __params:=/opt/AutowareAuto/share/autoware_auto_avp_demo/param/euclidean_cluster.param.yaml
+```
+
+**NOTE**: When trying to source the Autoware.Auto workspace, I got the following error, but I could execute everything without any problem:
+
+```bash
+not found: "/opt/AutowareAuto/share/spinnaker_camera_driver/local_setup.bash"
+not found: "/opt/AutowareAuto/share/spinnaker_camera_node/local_setup.bash"
+```
 
 
 ---
