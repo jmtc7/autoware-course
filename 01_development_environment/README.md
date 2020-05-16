@@ -182,6 +182,9 @@ not found: "/opt/AutowareAuto/share/spinnaker_camera_driver/local_setup.bash"
 not found: "/opt/AutowareAuto/share/spinnaker_camera_node/local_setup.bash"
 ```
 
+The result of this, without including the two last steps for clarity, should be a visualization of the robot (Lexus RX 450h), the LIDAR sensors, their frames, and the raw LIDAR data converted to point clouds, as can be appreciated in the next GIF (it is also a link to the full 8 minutes demo, hosted in YouTube:
+
+[![Demo visualization](lidar_visualization.gif)](https://www.youtube.com/watch?v=Ooxcm8KTMS8&list=PLBYQePjTMEGHIbWg2AF7mJLnxNA9-PSab&index=1)
 
 ---
 
