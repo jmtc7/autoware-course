@@ -236,15 +236,47 @@ ade$ ros2 run autoware_auto_autoware_my_first_pkg autoware_my_first_pkg_exe
 
 ## Section 2. Safety
 ## [1.5. Safety Lecture Overview](https://youtu.be/XTmlhvlmcf8?t=2800)
+This section will be covered by Tobias Augspurger, Product Owner at StreetScooter, a smaller company of DHL. They build yard logistic robots for the DHL parcel centers. The section will be about the development of safe and reliable robots for close or public roads. The official course notes can be found in this [Apex.AI repository](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv2.md).
 
-## 1.6. Development of Complex and Safety-Critical Software - The Theory
+## 1.6. [Theory Behind Developing Safety-Critical Software](https://youtu.be/XTmlhvlmcf8?t=2842)
+### [Safety and Security in Automotive](https://youtu.be/XTmlhvlmcf8?t=2842)
+*Safety* is the condition of being unlikely to cause danger, risk or injuries. Therefore, the safest vehicle is one that does nothing. This is why the *freedom* that is wanted to be given to the vehicle should be taken into consideration, however, it will add risks.
+
+Given how critical are the applications related to autonomous vehicles, it is very important to develop in an environment that allows and encourage developers to talk freely about the risks they see in order to solve the maximum possible ammount of them.
+
+### [Responsabilities and Safety Verification](https://youtu.be/XTmlhvlmcf8?t=2995)
+When using open source software in comercial systems, the developers of the open source software will not usually have any responsability about what happens with the system (depending on the license terms, Autoware.Auto uses the Apache License Vesion 2.0). The manufacturer using this software is responsible of testing and validating it to certify that anything will happen. To avoid this, BMW CarIT GmbH developed a open source software [safety verification methods](http://www.bmw-carit.de/downloads/presentations/2018-04-25_Bulwahn_Linux-Safety-Verification.pdf) for the Linux kernel. This is also done in the [ELISA](https://www.linuxfoundation.org/press-release/2019/02/the-linux-foundation-launches-elisa-project-enabling-linux-in-safety-critical-systems/) project.
+
+### Formal Safety Development Standards in automotive Software Systems
+The [ISO 26262](https://www.iso.org/obp/ui/#iso:std:iso:26262:-2:ed-2:v1:en) enforces companies to design development processes following the mentioned standard. In order to work profesionally in this field, both the product development and the supply chain must be [certified](https://www.tuv.com/world/en/evaluation-of-supplier.html) by the [ISO 26262](https://www.iso.org/obp/ui/#iso:std:iso:26262:-2:ed-2:v1:en), which will protect the certified companies in terms of malfunctions damaging persons or objects because *[reasonable car](https://www.eejournal.com/article/20161116-liability/)* was shown.
+
+### [Popular Software Development Models](https://youtu.be/XTmlhvlmcf8?t=3140)
+There are several software development models that are commonly found these days. The main three ones are:
+
+- **Waterfall**: One of the oldest ways to develop. It separates the development into different sequential steps that are not iterable (requirements, design, implementation, verification, and maintenance). The team will not be able to go from one step to another behind it. This model can be useful in projects with very costful changes. However, whenever the requirements are no perfectly known or they change during the development, the product can end up being useless.
+- **V-Model**: Describes the relationship between the requirements and the design and verification phases. In verification processes, it is possible to show that every requirement was checked and verified using tests at the end of the development. In test-driven development, the tests are defined even before the actual implementation, so that the development will be done only to suit the requirements (represented as tests). ISO 26262 requires an adaption of this development model.
+- **Agile**: There are many Agile methods, such as [Scrum](https://www.scrumguides.org/docs/scrumguide/v2017/2017-Scrum-Guide-US.pdf) or [Extreme Programming](http://www.extremeprogramming.org/), which allow iterations in the development phases, making them very flexible and useful to start working before knowing exactly what does the customer wants and shape the final product during the whole development using feedback and finding knowledge during the process.
+
+The **V-Model for Autonomous Driving** specified by ISO 26262 starts creating the **requirements** using a hazard analysis and users specifications, considering at the same time how the **validation** will be done in order to check this. Every step, going from the *requirements* to the *module realisation*, must be traceable and validated or verified. That is why it is key to be able to demonstrate how, e.g. the system design is tested/verified with the system validation. It is not possible to create a system and use it in the development if the tests for this system are not defined (and so, it have been proven that the system can be verified).
+
+The complexity (and almost infeasibility) of specifying all the hazards concering an autonomous car in an urban scenario is obvious, specially from the start of the development. i.e. even if all the user/customer specifications are known, the hazard analysis can not be completed. This is why this model, even it is used in the Automotive sector, can not be used by itself for high-level autonomous cars. A way of solving this can be **combining the V-Model with Agile development**, keeping traceability, validation, and verification, but being able to change requirements when needed. This combined system is called ***[Agile System Engineering](https://assets.vector.com/cms/content/consulting/publications/AgileSystemsEngineering_Vector_Ford.pdf)*** and has been done by Vector at Ford. It consists in making several V-Model developments so that, even if their outputs (*module implementations*) are failures, the gathered knowledge can be used in the beginning (*requirements*) of the next cycle to get a better version. This will be repeated again and again until a V-Model succeeds producing a complete and safe product.
+
+This can combine with the **Operational Design Domain** (ODD), defined by J3016, which does not start with requirements, the development will begin limitating the environment or the application itself (e.g. limitate the road environment, state and behavior of the vehicle, time-of-day, traffic congestion, etc.). This has also been adopted by Autoware.Auto in a way that is explained more in-depth [here](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv2.md). They re-used the [safety documents of the Autonomous Valid Parking (AVP) project of Parkopedia](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/issues/206) for their own AVP project.
+
+To sum up, the full development model will combine the Agile loops and the V-Model with the Operational Design Domain to combine the advantages of all of those. i.e. a *Safe Prototype Development Environment* will ve available for testing the new developments, technologies and solutions. At the same time, there will be an *Automated and Certified Continuous Engineering* that will allow to release the software in a certifiable and traceable way. Once a release is available, data will be gathered using it and the *Operational Design Domain* used to work at so that new V-Models can be started using the new information (which will most likely introduce new requirements) and maybe a new less restrictive ODD.
+
+### [Separation of Concerns](https://youtu.be/XTmlhvlmcf8?t=3980)
+Since the target of changing the used Operational Design Domain is to increase the functionality of the system (e.g. make it robuts to driving in different times of the day, with other vehicles in the road or in its lane, etc.) to keep iterating and generating new, safer, and more complete releases, the ***Separation of Concerns*** (SoC) comes into play. A program emboding SoC properly would be a modular program. ROS 1 and ROS 2 encourage SoC because they allow the creation of many *modules* (nodes) that communicate between eachother over a [middleware](https://design.ros2.org/articles/ros_middleware_interface.html). This allows to re-use functionalities between different Design Domains, making the development of new releases quicker and cheaper in many senses.
 
 
-## 1.7. Development of Complex and Safety-Critical Software - The Practice
+## [1.7. Safety-Critical Software Design in Practice](https://youtu.be/XTmlhvlmcf8?t=4060)
+
+
 
 
 ---
 
 
-## Section 2. Conclusions and the Next Lecutre
+## Section 3. Conclusions and the Next Lecutre
+
 
