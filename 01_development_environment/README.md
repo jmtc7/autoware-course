@@ -14,7 +14,7 @@ The content of this lesson will be:
 There are provided materials for both the [first part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv.md) and the [second part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv2.md) of the lesson, consisting in MarkDown files with the lesson contents.
 
 ## Section 1. Introduction
-## [1.1.1. Course Introduction](https://youtu.be/XTmlhvlmcf8?t=75)
+## [1.1. Course Introduction](https://youtu.be/XTmlhvlmcf8?t=75)
 Currently (May 2020), Autoware.Auto has full **localization** capabilities using LIDAR and GPS, full **perception** of other traffic participants in 2D and 3D (it can classify, infer their velocities and intended path), **motion planning** for relatively simple maneuvers and **information about the environment** in segmented semantic maps that highlight, for example, lanes, crosswalsk, traffic lights, etc. In [this video](https://www.youtube.com/watch?v=kn2bIU_g0oY), some of the Autoware capabilities can be appreciated, such as the car reacting to unexpected situations (obstacle appearing in the road), waiting for pedestrians to go across crosswalks, following a slow vehicle, backward driving and localization.
 
 All the content will be hosted in the [Apex.AI website](https://www.apex.ai/autoware-course), where links to the videos and materials can be found, as well as a very complete syllabus of the course and the sections of each lesson.	 Every Monday a new lecture will be published until the 14 lessons are completed.
@@ -38,7 +38,7 @@ Regarding the implementation, almost every company working with Autonomous Syste
 The **complexity of developing Autonomous Vehicles** (AVs) and applications for them makes it very helpful to have already well-developed, tested, and reliable software that can be used in order to avoid re-investing resources in developing what has already been developed. This allows the end users (companies developing applications for AVs) to focus on the application itself instead of the underlying technologies.
 
 
-## [1.1.2. How will the course work?](https://youtu.be/XTmlhvlmcf8?t=795)
+## [1.2. How will the course work?](https://youtu.be/XTmlhvlmcf8?t=795)
 This is not a course for beginners, so there are a few assumed prerequisites, such as:
 
 - Familiarity with ROS 1 and intermediate C++.
@@ -54,7 +54,7 @@ Lectures 2 and 3 will be done by Katherine, from Open Robotics, and will be abou
 Each lesson will contain a theoretical background, programatic examples and systematic examples, so that the students will be able to experiment with the *labs*.
 
 
-## [1.2.1. Development Environment](https://youtu.be/XTmlhvlmcf8?t=1379)
+## [1.3. Development Environment](https://youtu.be/XTmlhvlmcf8?t=1379)
 ### ADE Installation
 The development environment that will be used is ADE, which is a wrapper around Docker that allows interaction with Docker (e.g. starting/stopping dockers), easy configurations and versioning of docker volumes. A guide for the installation can be found [here](https://ade-cli.readthedocs.io/en/latest/install.html#requirements), which is basically a **Docker installation followed by** the following actions:
 
@@ -137,7 +137,7 @@ ade$ colcon test-result
 ```
 
 
-## [1.3.1. Object Detection Demo](https://youtu.be/XTmlhvlmcf8?t=2168)
+## [1.4. Object Detection Demo](https://youtu.be/XTmlhvlmcf8?t=2168)
 It is a LIDAR-based object detection demo. The first necessary thing to do is to download a pre-recorded ***[pcap file](https://drive.google.com/open?id=1vNA009j-tsVVqSeYRCKh_G_tkJQrHvP-)***, which is a collection of UDP packages recorded while driving in Palo Alto. This file should be moved into a folder named `data/`, in the `adehome` directory. Next, the **configuration files** for this lectures should be cloned from the following ApexAI repository (from insider the ADE environment):
 
 ```bash
@@ -186,13 +186,61 @@ The result of this, without including the two last steps for clarity, should be 
 
 [![Demo visualization](lidar_visualization.gif)](https://www.youtube.com/watch?v=Ooxcm8KTMS8&list=PLBYQePjTMEGHIbWg2AF7mJLnxNA9-PSab&index=1)
 
+
+### [Editing and Compiling Code](https://youtu.be/XTmlhvlmcf8?t=2550)
+The first thing, if this was not already dont, is to enter the ADE environment, going into the `AutowareAuto/src` directory and sourcing the built version of Autoware.Auto:
+
+```bash
+$ ade start
+$ ade enter
+ade$ cd AutowareAuto/src/
+ade$ source /opt/AutowareAuto/setup.bash
+```
+
+Next, the `autoware_auto_create_pkg` script, it is possible to create a new ROS 2 package in AutowareAuto with all the necessary details, such as manteinter, email, package description, etc. A sample execution of this with my data would be:
+
+```bash
+ade$ autoware_auto_create_pkg --destination . --pkg-name autoware_my_first_pkg --maintainer "Jose Miguel TORRES CAMARA" --email josemigueltorrescamara@gmail.com --description "My first Autoware pkg."
+```
+
+Now, a new folder named `autoware_my_first_pkg` should have been created and should be containing the following files and sub-directories:
+
+- **CMakeLists.txt**: Describes how to build the code withing the package.
+- **design/**: Folder for design documents, used to give guidance to the architecture of the package.
+- **include/**: Headers that will be included in the source codes.
+- **package.xml**: Meta information about the package.
+- **src/**: Contains the source code files.
+- **test/**: Testing files.
+
+Now, as a test, we can now edit the `autoware_my_first_pkg_node.cpp` file, located inside the `src/` directory of the package that has just been created. Here are some examples on how to do this from the command line using Vim or Emacs:
+
+```bash
+ade$ vim autoware_my_first_pkg/src/autoware_my_first_pkg_node.cpp
+ade$ emacs -nw autoware_my_first_pkg/src/autoware_my_first_pkg_node.cpp
+```
+
+And add a line, such as an error message in the `print_hello()` function. Finally, in order to compile the package and execute this node, these are the steps to follow:
+
+```bash
+ade$ cd .. # Move to the root of the AutowareAuto directory
+ade$ colcon build --packages-select autoware_auto_autoware_my_first_pkg
+ade$ source install/setup.bash
+ade$ ros2 run autoware_auto_autoware_my_first_pkg autoware_my_first_pkg_exe
+```
+
+
+
+
 ---
 
+
 ## Section 2. Safety
-## 1.2.1. Development of Complex and Safety-Critical Software - The Theory
+## [1.5. Safety Lecture Overview](https://youtu.be/XTmlhvlmcf8?t=2800)
+
+## 1.6. Development of Complex and Safety-Critical Software - The Theory
 
 
-## 1.2.2. Development of Complex and Safety-Critical Software - The Practice
+## 1.7. Development of Complex and Safety-Critical Software - The Practice
 
 
 ---
