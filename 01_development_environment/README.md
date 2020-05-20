@@ -270,13 +270,51 @@ Since the target of changing the used Operational Design Domain is to increase t
 
 
 ## [1.7. Safety-Critical Software Design in Practice](https://youtu.be/XTmlhvlmcf8?t=4060)
+This section will go through how to implement the theory explained in the last section. Some of it is used in Autoware.Auto, while some parts are not (yet). However, since the process is iterative and Autoware.Auto allows gathering knowledge, this is OK as long as it is assumed that it is not finished, so it will be possible to introduce these missing parts on future cycles.
+
+### [Sample General Design Guidelines](https://youtu.be/XTmlhvlmcf8?t=4060)
+As an example, these are the Apex.AI's internal **General Design Guidelines** (which are based on [JSF-AV-rules](http://www.stroustrup.com/JSF-AV-rules.pdf)), sorted from more to less important: 
+
+- **Reliability**: Fufilling requirements in a predictable manner.
+- **Portability** of the source code: Make it not dependent on the compiler or linker.
+- **Maintainability**: Make source code consistent, readable, simlpe and easy to debug.
+- **Testability** is kept in mind when developing source code.
+- **Re-usability** of components of the source code, reducing costs of development and testing.
+- **Extensibility**: Requirements can evolve over the life of a product, so the code should be able to handle these modifications by local extensions rather than big modifications.
+- **Readability**: The code must be easy to read, understand and comprehend.
+
+### [Develop in a Fork](https://youtu.be/XTmlhvlmcf8?t=4480)
+In order to develop for Autoware.Auto, the [fork-and-pull model](https://autowarefoundation.gitlab.io/autoware.auto/AutowareAuto/developer-guidelines.html) should be used as the contribution workflow. This consists on forking the current development, adding the development in the forked repository and finally open a *merge (or pull) request* to integrate it in the main Autoware.Auto repository. All the design guidelines are also exposed to be kept in mind while developing.
+
+### [Designs and Requirements](https://youtu.be/XTmlhvlmcf8?t=4575)
+As an example, Christopher Ho (of Apex.AI) showed in two posts ([part 1](https://www.apex.ai/post/building-safe-algorithms-in-the-open-part-1-design) and [part 2](https://www.apex.ai/post/building-safe-algorithms-in-the-open-part-2-implementation)) how they created the requirements for the NDT development, an algorithm for LIDAR-based localization and point cloud registration. A relevant part of it is the view of the integration part. It should be done keeping a high-level view while fixing low-level problems. It is very convinient to advance as much as possible in integration because, even if the parts to integrate are perfect, if they do not integrate well with each other, they will be useless and it will imply a lot of cost to re-do them so that they can be properly integrated.
+
+This problem can be overcomed by using  **[Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) processes**. They propose not to develop anything that has not a test already created. That implies that nothing will be developed if it is not to fulfill a requirement.
+
+### [Verification](https://youtu.be/XTmlhvlmcf8?t=4735)
+In order to compare the exposed theory with its implementation in Autoware.Auto. In the V-Model, the final step (implementation) will be done keeping the stablished coding standard/design guidelines. The component verification will be done by unit testing. The subsystems verification is done with integration tests. Finally, the general system validation will be done using the defined Operational Design Domain.
 
 
+#### [Unit Testing and Structural Code Coverage](https://youtu.be/XTmlhvlmcf8?t=4825)
+**Unit testing** is the lowest level testing. It consists in creating a test for every function. It uses a groundtruth that tells when an input (or set of them) produces the expected output (or set of them). It will compare the software-produced outputs with the mentioned groudntruth examples. This tests will be ran every time that the software is modified to make sure that the change did not introduce any bug. This will also make it easier to detect the presence of [Heisenbugs](https://en.wikipedia.org/wiki/Heisenbug) to remove the parts of the code that introduce undefined behaviour.
 
+Regarding **Structural Code Coverage**, it is a measure of how many areas of the code are used during testing, which helps to make sure that no release contains untested code.
 
----
+Autoware.Auto provides a *How to* on [writing tests and measure coverages](https://autowarefoundation.gitlab.io/autoware.auto/AutowareAuto/how-to-write-tests-and-measure-coverage.html).
 
+#### [Integration Testing](https://youtu.be/XTmlhvlmcf8?t=4955)
+It is a hard part, since before there were several persons working on their own but now everything must work together. They should be done as early as possible in order to avoid useless efforts developing things that will not be able to be integrated. The integration tests are usually ran in simulators, such as Gazebo, [Ignition Robotics](https://ignitionrobotics.org/) or LGSVL (depending on the used sensors, more or less sophisticated simulators may be needed. e.g. if an algorithm is based on camera data, a very realistic one will be needed). This is a huge advantage because it will fulfill some of the requirements very early in the development process.
 
-## Section 3. Conclusions and the Next Lecutre
+Autoware.Auto also provides guidelines on [how to create integration tests](https://autowarefoundation.gitlab.io/autoware.auto/AutowareAuto/integration-testing.html).
+
+#### [Validation by Operational Design Domain](https://youtu.be/XTmlhvlmcf8?t=5290)
+The validation stands in the upper part of the V-Model. Its purpose is to check if what has been built is what was initially required. This is the reason Autoware.Auto is validated by the Operational Design Domain (ODD). The development is done following a secuence of achievable technological [milestones](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/milestones), each one of them being a different (and, most likely, more complex) ODD. This means that each milestone will require the system to be able to success doing a certain task in certain conditions (with some assumptions and restrictions). 
+
+All this happens into a loop in which the next ODD is chosen, then defined and finally the required scenarios to support it are specified. Next, the loop starts again. This makes sure that everything that is validated could be defined and specified previously, so everything will be clear and limited to which is needed with no ambiguities.
+
+### [Continuous Integration and DevOps](https://youtu.be/XTmlhvlmcf8?t=5390)
+*Continuous Integration* (CI) is a way to automate software development so developers can get information from others without much communication between them, making the overall process quicker and more precise. A common testing and build environment will be used to avoid problems derived from the configurations of the developers' local systems.
+
+This practice of CI is extended in the so called *DevOps*, which is a set of practices combining software development (Dev) and information-technology (IT) operations (Ops) aimed to make the development shorter and provide continuous deliverables.
 
 
