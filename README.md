@@ -28,6 +28,6 @@ This course is held by [Apex.AI](https://www.apex.ai/autoware-course) and [TheCo
 - Lecture 13: Motion planning and Control: **[Embotech](http://embotech.com)**
 - Lecture 14: MARV for Data Storage and Analytics: **[Ternaris](https://ternaris.com)**
 
-Other collaborators are: [AutonomouStuff](https://autonomoustuff.com), [Kalray](http://kalray.eu), [Samsung](https://www.sra.samsung.com), and [Tier](IV http://tier4.jp).
+Other collaborators are: [AutonomouStuff](https://autonomoustuff.com), [Kalray](http://kalray.eu), [Samsung](https://www.sra.samsung.com), and [Tier IV](http://tier4.jp).
 
 Each lesson will contain a theoretical background, programatic examples and systematic examples, so that the students will be able to experiment with the *labs*.
