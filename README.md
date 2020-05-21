@@ -1,4 +1,6 @@
 # Autoware.auto Course Notes
+[![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto/)
+
 This repository will contain the notes I took during my course on Autoware.auto, a ROS-based software stack for autonomous vehicle development, the biggest free software standard for this purpose.
 
 This course uses the open source robotics framework ROS 2 and the Autoware.Auto algorithms, which are covered through the 14 lectures of it, which show state-of-the-art techniques to combine hardware, software, algorithms, methodologies, tools and data to build useful applications in the autonomous system context. It is oriented to students with previous experience in related fields and knowledges of C++, testing, robotics frameworks and system integration.
