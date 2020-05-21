@@ -1,5 +1,7 @@
-# Lesson 1: Development Environment
-The lecturers are (1) Dejan Pangercic (ROS 2 and Autoware Developer and CTO of Apex.AI) and Tobias Augspurger (StreetScooter). The lesson video can be accessed from the following link:
+# Lesson 01: Development Environment
+[![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto/)
+
+The lecturers are **Dejan Pangercic** (ROS 2 and Autoware Developer and CTO of Apex.AI) and **Tobias Augspurger** (Product Owner at StreetScooter). The lesson video can be accessed from the following link:
 
 [![Lesson video](https://img.youtube.com/vi/XTmlhvlmcf8/0.jpg)](https://www.youtube.com/watch?v=XTmlhvlmcf8)
 
@@ -9,7 +11,7 @@ The content of this lesson will be:
 - Why is it a relevant course
 - Logistics and Content
 - ADE Environment
-- Best Practices for Autonomous Systems Applications
+- Development Strategies for Safety-Critical Systems
 
 There are provided materials for both the [first part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv.md) and the [second part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv2.md) of the lesson, consisting in MarkDown files with the lesson contents.
 
@@ -19,7 +21,7 @@ Currently (May 2020), Autoware.Auto has full **localization** capabilities using
 
 All the content will be hosted in the [Apex.AI website](https://www.apex.ai/autoware-course), where links to the videos and materials can be found, as well as a very complete syllabus of the course and the sections of each lesson.	 Every Monday a new lecture will be published until the 14 lessons are completed.
 
-### Importance of Autonomous Systems
+### [Importance of Autonomous Systems](https://youtu.be/XTmlhvlmcf8?t=75)
 It is a **megatrend**, as can be clearly appreciated by the increase of investments in this field, which has gone from 0.6 to 5.6 billions of Dollars within 5 years. Another consideration is the potential improvement in both **traffic congestion and road safetyi**.
 
 Another reason for the existance of this course is the **maturity of** the two main used pieces of software: **ROS 2 and Autoware**. They are also relatively new technologies that not many people are familiarized with.
@@ -238,7 +240,7 @@ ade$ ros2 run autoware_auto_autoware_my_first_pkg autoware_my_first_pkg_exe
 ## [1.5. Safety Lecture Overview](https://youtu.be/XTmlhvlmcf8?t=2800)
 This section will be covered by Tobias Augspurger, Product Owner at StreetScooter, a smaller company of DHL. They build yard logistic robots for the DHL parcel centers. The section will be about the development of safe and reliable robots for close or public roads. The official course notes can be found in this [Apex.AI repository](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv2.md).
 
-## 1.6. [Theory Behind Developing Safety-Critical Software](https://youtu.be/XTmlhvlmcf8?t=2842)
+## [1.6. Theory Behind Developing Safety-Critical Software](https://youtu.be/XTmlhvlmcf8?t=2842)
 ### [Safety and Security in Automotive](https://youtu.be/XTmlhvlmcf8?t=2842)
 *Safety* is the condition of being unlikely to cause danger, risk or injuries. Therefore, the safest vehicle is one that does nothing. This is why the *freedom* that is wanted to be given to the vehicle should be taken into consideration, however, it will add risks.
 
@@ -247,7 +249,6 @@ Given how critical are the applications related to autonomous vehicles, it is ve
 ### [Responsabilities and Safety Verification](https://youtu.be/XTmlhvlmcf8?t=2995)
 When using open source software in comercial systems, the developers of the open source software will not usually have any responsability about what happens with the system (depending on the license terms, Autoware.Auto uses the Apache License Vesion 2.0). The manufacturer using this software is responsible of testing and validating it to certify that anything will happen. To avoid this, BMW CarIT GmbH developed a open source software [safety verification methods](http://www.bmw-carit.de/downloads/presentations/2018-04-25_Bulwahn_Linux-Safety-Verification.pdf) for the Linux kernel. This is also done in the [ELISA](https://www.linuxfoundation.org/press-release/2019/02/the-linux-foundation-launches-elisa-project-enabling-linux-in-safety-critical-systems/) project.
 
-### Formal Safety Development Standards in automotive Software Systems
 The [ISO 26262](https://www.iso.org/obp/ui/#iso:std:iso:26262:-2:ed-2:v1:en) enforces companies to design development processes following the mentioned standard. In order to work profesionally in this field, both the product development and the supply chain must be [certified](https://www.tuv.com/world/en/evaluation-of-supplier.html) by the [ISO 26262](https://www.iso.org/obp/ui/#iso:std:iso:26262:-2:ed-2:v1:en), which will protect the certified companies in terms of malfunctions damaging persons or objects because *[reasonable car](https://www.eejournal.com/article/20161116-liability/)* was shown.
 
 ### [Popular Software Development Models](https://youtu.be/XTmlhvlmcf8?t=3140)
