@@ -10,7 +10,7 @@ The content of this lesson will be an overview of the C++ API for ROS 2. The ADE
 The provided slides in PDF format can be found in the Apex.AI's [autowareclass2020 repository](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/02_ROS2_101/lesson2.pdf), in GitLab.
 
 
-## 2.1. Introduction
+## [2.1. Introduction](https://youtu.be/FTA4Ia2vLS8?t=170)
 
 
 ## 2.2. Getting Help
@@ -51,9 +51,3 @@ The provided slides in PDF format can be found in the Apex.AI's [autowareclass20
 - Running an action server with a client
 
 
-
-
----
-
-
-## Section 2. 
