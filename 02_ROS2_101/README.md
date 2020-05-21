@@ -1,5 +1,5 @@
 # Lesson 02: ROS 2 101
-[![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto/)
+[![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto)
 
 This lesson will be provided by Katherine Scott, Developer Advocate at Open Robotics. The lesson video is available in YouTube:
 
@@ -11,22 +11,38 @@ The provided slides in PDF format can be found in the Apex.AI's [autowareclass20
 
 
 ## [2.1. Introduction](https://youtu.be/FTA4Ia2vLS8?t=170)
+This lesson is intended to be a crash course on ROS 2 Dashing, its API and a bit in its build tools. Its target is to make the students able to code and build simple ROS 2 applications. ROS 2 Foxy will be released in a few weeks, which will be a major LTS distribution, so some things may change from Dashing to Foxy.
+
+### [Getting Help](https://youtu.be/FTA4Ia2vLS8?t=330)
+ROS has been around for over a decade right now (2010-2020), so there are a lot of useful resources to help new incomers. These resources are the following:
+
+- **[ROS Answers](http://answers.ros.org)**: A QA website in the Stack Overflow style.
+- **[ROS Discourse](https://discourse.ros.org)**: Community hub for news and discussion. NOT for asking questions.
+- **[ROS Wiki](http://wiki.ros.org)**: Mostly ROS 1, but most of the content is still useful for ROS 2.
+- **[ROS 2 Documentation](https://index.ros.org/doc/ros2)**: The official ROS 2 documentation, usually the first go-to. Most of this lesson comes from here, so more detailed explanations can be found in this documentation.
+
+### [Unofficial Resources](https://youtu.be/FTA4Ia2vLS8?t=460)
+There are some other unofficial resources where relevant information might be found. Those are:
+
+- **[ROS subreddit](https://www.reddit.com/r/ROS/)**
+- Unofficial **[ROS Discord](https://discord.gg/KKhcmVN)**
+- **[ROSCon](https://roscon.ros.org/2020/)**, the yeraly ROS developers conference. Most of the old talks are available on the web.
+- **Twitter** accounts:
+  - **[@OpenRoboticsOrg](https://twitter.com/OpenRoboticsOrg)** is the most active one
+  - **[@ROSOrg](https://twitter.com/rosorg)** for official ROS announcements
 
 
-## 2.2. Getting Help
-
-
-## 2.3. Unofficial Resources
-
-
-## 2.4. ROS Introduction
+## [2.2. ROS Introduction](https://youtu.be/FTA4Ia2vLS8?t=525)
 - Brief introduction to ROS
 - Core ROS concepts
 - Environment setup
 - Colcon nomenclature
 
+### [History of ROS](https://youtu.be/FTA4Ia2vLS8?t=525)
 
-## 2.5. Nodes and Publishers
+
+
+## 2.3. Nodes and Publishers
 - Overview o ftopics
 - Building and running a node
 - Simple publisher build and run
@@ -34,7 +50,8 @@ The provided slides in PDF format can be found in the Apex.AI's [autowareclass20
 - Building a subscriber 
 - Pub/sub working together
 
-## 2.6. Services
+
+## 2.4. Services
 - Concept overview
 - Review basic service
 - Running basic services
@@ -42,7 +59,8 @@ The provided slides in PDF format can be found in the Apex.AI's [autowareclass20
 - Building a service client
 - Executing a server/client service
 
-## 2.7. Actions
+
+## 2.5. Actions
 - Action Overview
 - Action file review
 - Basic action review
