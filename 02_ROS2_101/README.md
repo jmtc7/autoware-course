@@ -3,7 +3,7 @@
 
 This lesson will be provided by Katherine Scott, Developer Advocate at Open Robotics. The lesson video is available in YouTube:
 
-[![Lesson video](https://img.youtube.com/vi/FTA4Ia2vLS/0.jpg)](https://www.youtube.com/watch?v=FTA4Ia2vLS)
+[![Lesson video](https://img.youtube.com/vi/FTA4Ia2vLS8/0.jpg)](https://www.youtube.com/watch?v=FTA4Ia2vLS8)
 
 The content of this lesson will be an overview of the C++ API for ROS 2. The ADE environment will be used for the lecture, which is a *dockerized* container of ROS. During the lesson, most of the ROS 2 Dashing tutorials will be installed and some of them will be explained in more detail, providing hints, tips and tricks during the process. Also, the ROS 2 CLI interface will be introduced, but the next lesson will cover it in more detail.
 
