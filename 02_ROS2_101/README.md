@@ -33,11 +33,6 @@ There are some other unofficial resources where relevant information might be fo
 
 
 ## [2.2. ROS Introduction](https://youtu.be/FTA4Ia2vLS8?t=525)
-- Brief introduction to ROS - ok
-- Core ROS concepts - ok
-- Environment setup - ip
-- Colcon nomenclature
-
 ### [History of ROS](https://youtu.be/FTA4Ia2vLS8?t=525)
 The history of ROS will be presented in order to be able to understand its structure and philosophy, seeing it keeping the context in which it was developed in mind, instead of only the modern development perspective. Back in the 2000s, Open Source was growing, but Windows dominated. Back then, *robots* were mainly robotic arms for manufacturing running over real-time (RT) control systems.
 
@@ -58,11 +53,52 @@ ROS's design was based by design patters that were successfully used before, bei
 - **URDF and TF** - Matrix Math for 3D Operations: TF stands for *Transform* and URDF for *Universal Robot Description Format*. They are tools for automatically calculating robot geometry using matrix math.
 
 ### [Jumping in the Deep End - Environment Setup](https://youtu.be/FTA4Ia2vLS8?t=1000)
+After the [Lesson 01](https://github.com/jmtc7/autoware-course/tree/master/01_development_environment), ADE is already installed and working using the Autoware instructions. Next thing to do is to update the system, and install ROS Dashing and some tools. To do so, the commands to be executed are:
+
+```bash
+# Enter the environment
+$ ade start
+$ ade enter
+
+# Source ROS Dashing (if it is not done in the local ~/.bashrc file)
+ade$ source /opt/ros/dashing/setup.bash
+
+# Instal Turtlesim and QT GUI apps
+ade$ sudo apt update
+ade$ sudo apt install ros-dashing-turtlesim
+ade$ sudo apt install ros-dashing-rqt-*
+
+# Optional for managing terminals, other options are Terminator and TMux
+#ade$ sudo apt-install byobu
+
+# Install any IDE, text editor or tools that you may want to be available in the environment
+```
+
+### [Colcon Nomenclature](https://youtu.be/FTA4Ia2vLS8?t=1140)
+ROS is built upon **packages**, which are collections of code (C++ or Python mainly, but Java or Go are also possible). There are a lot of packages released on the web that can be pulled and used. A **workspace** is a collection of source code and packages oriented to be depolyed on a robot or system. A Python virtual environment could be an analogy to that. **Overlays** are second workspaces with more packages. In case of duplicity, the package or code at the bottom will be used. **Underlays** are workspace underneath an overlay, some sort of layering Python's virtual environments on top of each other. Finally, **Colcon** is the ROS 2 build tool, some sort of a layer abouve CMake or Make.
+
+As an example, a repository will be cloned and built. In order to do this, three terminal sessions will be needed, all of them inside the container and with ROS Dashing sourced. The steps to do this are the following:
+
+```bash
+# Create a folder to be used as the workspace and go into it
+mkdir -p ~/ros2_example_ws/src/
+cd ~/ros2_example_ws/
+
+# Clone the ROS 2 examples
+git clone https://github.com/ros2/examples src/examples/
+
+# Check the examples for the Dashing distribution
+cd ~/ros2_example_ws/src/examples
+git checkout dashing
+
+# Build the examples
+cd ~/ros2_example_ws/
+colcon build --symlink-install
+```
 
 
-
-## 2.3. Nodes and Publishers
-- Overview o ftopics
+## [2.3. Nodes and Publishers](https://youtu.be/FTA4Ia2vLS8?t=1485)
+- Overview of topics
 - Building and running a node
 - Simple publisher build and run
 - Modifying the publisher
