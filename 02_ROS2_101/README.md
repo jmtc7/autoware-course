@@ -33,12 +33,31 @@ There are some other unofficial resources where relevant information might be fo
 
 
 ## [2.2. ROS Introduction](https://youtu.be/FTA4Ia2vLS8?t=525)
-- Brief introduction to ROS
-- Core ROS concepts
-- Environment setup
+- Brief introduction to ROS - ok
+- Core ROS concepts - ok
+- Environment setup - ip
 - Colcon nomenclature
 
 ### [History of ROS](https://youtu.be/FTA4Ia2vLS8?t=525)
+The history of ROS will be presented in order to be able to understand its structure and philosophy, seeing it keeping the context in which it was developed in mind, instead of only the modern development perspective. Back in the 2000s, Open Source was growing, but Windows dominated. Back then, *robots* were mainly robotic arms for manufacturing running over real-time (RT) control systems.
+
+Next, in 2006 Former Google VPs decided to apply Google's knowledge in robots, creating the company *Willow Garage* with a similar spirit of those of Bell Labs or PARC (from Xerox). From this organization, things as OpenCV, PCL, ROS, PR2 robot and a lot of spin out startups were originated.
+
+In 2012, Willow Garage folds and Open Robotics emerged from the people that were inside there and continued developing ROS. In 2017, they decided to fix all the limitations based on the feedback regarding things like *ROS is only useful for academics and research*. This was when ROS 2 was originated, with upgrades addressing security, robustness, quality of service, determinedness, etc.
+
+### [Concepts that Motivate ROS](https://youtu.be/FTA4Ia2vLS8?t=695)
+ROS's design was based by design patters that were successfully used before, being the following the correspondences between ROS concepts and the *things* they are based on:
+
+- **ROS Nodes** - Processes and/or threads: Self-contained processes, like programs. ROS is a collection of tools that allow several programs to be executed in parallel.
+- **ROS Topics** - Buses or PubSub: ROS' backbone is a publihs/subscribe bus. ROS Topics work in a similar way to ZeroMQ, RabbitMQ, or ModBus. i.e. things are published somewhere by someone and they can be read by other agents.
+- **ROS Messages and Bags** - Serialization: They are the data moved over the topics, so that this data is serialized between nodes (that can be implemented in different programming languages). Google Protocol Buffers are similar. ROS Messages can be written in a file called a ROS Bag, similar to Python's Pickle files.
+- **ROS Params** - Black Board Pattern: A way to create global variables between nodes/programs. Similar to Redis.
+- **ROS Services** - Synchronous Remote Procedure Call (RPC): Programs that can be called by another ones. The caller will be blocked until the callee returns the answer.
+- **ROS Actions** - Asynchronous Remote Procedure Call (RPC): Again, programs callable by other programs, but the caller will not be blocked until the callee returns as with the services.
+- **ROS Life cycles** - State Machines: Tool to move between states. Useful for modeling behaviours.
+- **URDF and TF** - Matrix Math for 3D Operations: TF stands for *Transform* and URDF for *Universal Robot Description Format*. They are tools for automatically calculating robot geometry using matrix math.
+
+### [Jumping in the Deep End - Environment Setup](https://youtu.be/FTA4Ia2vLS8?t=1000)
 
 
 
