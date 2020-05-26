@@ -50,11 +50,6 @@ This is not a course for beginners, so there are a few assumed prerequisites, su
 
 The course will advance keeping an Autonomous Valet Parking problem in mind, which will be used as the goal of the development that will be done during this course.
 
-### Next Lectures
-Lectures 2 and 3 will be done by Katherine, from Open Robotics, and will be about ROS 2. The forth lesson will be given by ADLink and it will be about an AV platform, composed by the hardware, a real-time operative systems (RTOS) and DDS (the middleware of choice in ROS2). The 5th lesson will be done by the Virtual Vehicle Research Center of Graz, Austria, and will be about the architecture of Autonomous Driving stacks and a bit of their history, presenting a lot of the problems of developing these systems. Next, the lesson 6, by The Autoware Foundation, will present the history and evolution of Autoware. During the lessons 7, 8 and 9, the main perception modalities will be analyzed. The 10th lesson will be about fusing data from IMUs and odometry and how to use it for localization. The lesson 11 will go over the localization module of Autoware and its application in Autonomous Valet Partking (AVP) and will be done by Autoware Foundation and Apex.AI. The lesson 12 will be given by LGE, the company behind the used LGAVL simulator, and will cover the simulation of AVs. The lesson 13 will be about HD maps (creation and usage) and will be done by Parkopedia. The 14th lesson, by Embotech, will be about motion planning and control. Finally, the lesson 15 will be about a tool called MARV, created by the company Ternaris, and will be about how to mine, store and analyze data.
-
-Each lesson will contain a theoretical background, programatic examples and systematic examples, so that the students will be able to experiment with the *labs*.
-
 
 ## [1.3. Development Environment](https://youtu.be/XTmlhvlmcf8?t=1379)
 ### ADE Installation
