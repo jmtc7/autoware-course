@@ -97,16 +97,58 @@ colcon build --symlink-install
 ```
 
 
-## [2.3. Nodes and Publishers](https://youtu.be/FTA4Ia2vLS8?t=1485)
-- Overview of topics
-- Building and running a node
-- Simple publisher build and run
-- Modifying the publisher
-- Building a subscriber 
-- Pub/sub working together
+## [2.3. Nodes, Publishers, and Subscribers](https://youtu.be/FTA4Ia2vLS8?t=1485)
+The core of ROS is the pub/sub bus, which is called *topic*. Each *topic* has a message type that is published on it. These **message types** are defined in yaml files that specifies what do they contain. An example of a ROS message type is `geometry_msgs/Twist`, which is a message to publish velocities. In its definition file, a *Twist* message is defined as two vectors with 3 float elements each. One vector is for the linear velocity and the other for the angular one, being their elements the X, Y and Z elements of those magnitues. There are a lot of pre-defined robotics-oriented message types, but ROS makes it possible to define new personalized ones.
+an DL
+ROS nodes can publish messages to topics (this would be known as a **publisher node**) or subscribe to topics to read the messages that are being published into them (**subscriber node**). The same node can be subscriber and publisher of one or more topics.
+
+ROS provides many **tools** for managing topics that can be used with the `ros2 topic` command. Some of the possibilities are list, *echo* them (print what is being published on them), *remap* (renaming the topic), or *bag* them (store what is being published on them in a file to replay them later on).
+
+ROS **nodes** are basically programs that run concurrently on ROS. Again, the `ros2 node` command provides a lot of node-related **tools**. It is possible to execute them independently using the `ros run` command, but it is also possible to configure custom grupal executions using ROS *launch files*.
+
+### [Building and Running a ROS Node](https://youtu.be/FTA4Ia2vLS8?t=1620)
+The first things to do after opening a new terminal are **entering the ADE environment** and **sourcing the ROS installation and the workspace** where the node that is going to be used is located. It is a good practice to use different terminals for building and executing. The package containing the node that is being executed can be built using the procedure explained in the *Colcon Nomenclature* subsection of this document. The sourcing of the examples package is done by executing `source install/setup.bash` from the root of the workspace.
+
+Once the code is built, it is possible to **run the node** (executable file generated from the building of the source code). To execute a node (executable) called `publisher_lambda` from the ROS package `examples_rclcpp_minimal_publisher`, the syntax would be `ros2 run <package_name> <node_name>`, so the command to be executed (and its output) would be:
 
 
-## 2.4. Services
+```bash
+ade$ ros2 run examples_rclcpp_minimal_publisher publisher_lambda
+[INFO] [minimal_publisher]: Publishing: 'Hello, world! 0'
+[INFO] [minimal_publisher]: Publishing: 'Hello, world! 1'
+[INFO] [minimal_publisher]: Publishing: 'Hello, world! 2'
+[INFO] [minimal_publisher]: Publishing: 'Hello, world! 3'
+```
+
+As an additional note, *RCLCPP* stands for *ROS Common Library C++*. 
+
+What this node is doing is publishing a string at 2 Hz in a topic called `/topic`. A list of the active topics can be seen by using `ros2 topic list` in another terminal. The messages that are being published in a topic can be monitored by using `ros2 topic echo <name_of_the_topic>`, and the frequency at which messages are being published can be estimated with `ros2 topic hz <name_of_the_topic>`.
+
+### [Publisher's Code](https://youtu.be/FTA4Ia2vLS8?t=1915)
+The code in `ros2_example_ws/src/examples/rclcpp/minimal_publisher/member_function.cpp` (from the previously executed node) will be used as an example. Regarding the **dependencies**, `rclcpp/rclcpp.hpp` is the C++ library for ROS 2. On the other hand, `std_msgs/msg/string.hpp` is included in order to be able to use the `string` ROS message type, which is inside the `std_msgs` package.
+
+Next, the `MinimalPublisher` **class** is defined, which inherits from `rclcpp::Node`, which means that the defined class will be a ROS node written in C++. Inside this class, the following elements are contained:
+
+- **Constructor**: It will receive a name and member variable (`counter_`), that will be the times that the node has published a message. The publisher is created to publish message of the type `std_msgs::msg::String` in the topic `/topic`, keeping a queue of up to 10 messages. Then, a 500 ms timer is created and binded to a callback (`timer_callback`).
+- **Timer's callback**: Whenever the timer completes its count, this function will be executed. It starts creating an empty `String` ROS message. Next, it stores `Hello, world!` followed by the content of the `count_` variable (adding one to it on the process). It prints what is going to be published using the ROS INFO and, finally, publishes it using the publisher created in the class constructor.
+- **Private member variables**: The `timer_`, `publisher_` and `count_` variables used in the above mentioned functions.
+
+The last part of the node is the `main()` function, which initializes the ROS Common Library (RCL) with `rclcpp::init()`, runs the `MinimialPublisher` node (spinning it) and cleans and closes everything whenever the spinning is interrupted.
+
+### [Subscriber's Code](https://youtu.be/FTA4Ia2vLS8?t=2440)
+Their usage is to read from a data stream (messages published in a topic) and, most of the time, process it and do something in consequence of the result. For example, there is a node acting as the driver of an encoder publishing when something each time a wheen turns one degree, a subscriber may subscribe to this information and process it to transform it from clicks to RPMs and publish it into another topic, which may be used by another subscriber to know if the current velocity is too high or too slow to variate the control signals sent to the wheels.
+
+The example code here will be `ros2_example_ws/src/examples/rclcpp/minimal_subscriber/member_function.cpp`. Again, the RCLCPP and String **header files** are included, since the ROS C++ library and the ROS String message will be used aswell. Again, same as before, a **class** is declared and it inherits from the RCLCPP's `Node` class, but this time it is called `MinimalSubscriber`. Its components are:
+
+- **Constructor**: Creates a subscription to a topic named `topic` expecting to read messages of type `std_msgs::msg::String`. This subscription will be binded to a callback function named `topic_callback()`, which will be executed each time a new message is received.
+- **Subscription's callback**: It will receive as its only argument a shared pointer to the new message that has been received. The callback will only send through ROS INFO that the message was received and the content of the message.
+
+For the `main()` function, again, the C++ ROS Common Library is initialized (with `init()`), the node is created and spinned until its execution is cancelled and, when it occurs, the program will clean everything and exit (`shutdown()`).
+
+By having both the publisher and the subscriber nodes running at the same time, the subscriber will be able to receive the published messages thanks to ROS 2. Any of these nodes' executions can be killed using `Ctrl + C` as with any normal CLI program. 
+
+
+## [2.4. Services](https://youtu.be/FTA4Ia2vLS8?t=2885)
 - Concept overview
 - Review basic service
 - Running basic services
