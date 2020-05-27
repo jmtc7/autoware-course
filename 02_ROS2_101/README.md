@@ -149,15 +149,56 @@ By having both the publisher and the subscriber nodes running at the same time, 
 
 
 ## [2.4. Services](https://youtu.be/FTA4Ia2vLS8?t=2885)
-- Concept overview
-- Review basic service
-- Running basic services
-- Calling services from the command line
-- Building a service client
-- Executing a server/client service
+### [Overview and basic example](https://youtu.be/FTA4Ia2vLS8?t=2885)
+Nodes, topics, and messages are the basics of ROS and many robots use only those elements to work. These elements are great to move a lot of data and make quick processing of it. However, there are occasions in which the robots must respond to data with simple behaviours, which is done with ***ROS Services***. They are similar to calling functions but the function is implemented in another node. They are tasks performed synchronously, i.e. they are performed while the thing that is using them waits (they can be called both from nodes or from the command line).
+
+The services are defined inside a folder named `srv` inside the package folder and they specify the inputs and the outputs of the service in a `.srv` file, which uses YAML syntax. A ***service server*** will be also necessary, which will be a node implementing what does the service does with its inputs and how it computes its outputs. The node using the service will be named a *service client*. A **sample service file** can be found at `/opt/ros/dashing/share/example_interfaces/srv/AddTwoInts.srv`, which defines a service whose purpose will be tu return the sum of two integers. The content of the file is the following:
+
+```yaml
+int64 a # An input of type int64 called 'a'
+int64 b # An input of type int64 called 'b'
+---
+int64 sum # An output of type int64 called 'sum'
+```
+
+A more in-depth tutorial on services and how to create and use them is in the following [ROS Tutorial](http://wiki.ros.org/ROS/Tutorials/WritingServiceClient%28c%2B%2B%29).
+
+### [Defining a Service Server](https://youtu.be/FTA4Ia2vLS8?t=3105)
+Using the `AddTwoInts` service mentioned before will be equivalent to using (in pseudocode) something like this: `int64 sum = AddTwoInts(int64 a, int64 b)`.
+
+A sample implementation of a *service server* (that defines what will happen when the service is called) can be found in `/home/jmtc7/ros2_example_ws/src/examples/rclcpp/minimal_service/main.cpp`. `Colcon` will generate the `add_two_ints.hpp` **header file** , while the other is the C++ ROS Common Library. The `using [...]` instruction is there in order to improve code clarity.
+
+The `handle_service()` function is what is going to be executed every time the service is called, which will take as arguments shared pointers to the request header (metadata of the request), to the request itself (input data, i.e. `a` and `b`) and to the response (output data to be written, i.e. `sum`). The function itself only sends through ROS INFO the received request and assigns the output with the sum of the inputs.
+
+Once having the service implemented, a `main()` is needed to make it available for the rest of the ROS environment. This `main()` initializes ROS, creates a node named `minimal_service` (which hosts the service server), creates the server service (named `add_two_ints`) and binds it to `handle_service()` and, as it was done with the publishers and subscribers, this will just spin until the failure or other execution interruption, moment in which everything will be cleaned and shutted down.
+
+### [Building and Running Services](https://youtu.be/FTA4Ia2vLS8?t=3315)
+In order to run a service, after building with `colcon` as already done before, the first thing will be to run the node hosting the service server, for which the (already used) syntax will be `ros2 run <package> <service server>`:
+
+```bash
+ade$ ros2 run examples_rclpp_minimal_service service_main
+```
+
+Now it is possible to send requests to (and receive responses from) this service, both from the command line or from a node. For **calling a service using the command line**, the syntax is `ros2 service call <service name> <service type> <data to input>`, resulting in something like the following:
+
+```bash
+ade$ ros2 service call /add_two_ints example_interfaces/AddTwoInts "{a: 1, b: 1}"
+```
+
+An useful tool is `ros2 service list`, which can be executed to list all the existing services.
+
+In order to **call a service from code**, a *service client* needs to be implemented. This is, a node that uses a service. An example of this is at `/home/jmtc7/ros2_example_ws/src/examples/rclcpp/minimal_client/main.cpp`. The already used header files are seen, as well as the `using` sentence. Inside the `main()`, after initializing ROS and creating a node, a client to the `add_two_ints` service is created. Notice that the ROS way of naming things is using camel case for the types (`AddTwoInts`) and underscores and lower case letters for the node names (`add_two_ints`). It checks if the service is available, throwing an error if it is not. Then, it will create a request, assign values to it and use the client to send it to the service, assigning the returned value to the result. Next, it will check if the return code is not `SUCCESS`, in which case an error will be thrown and the program will end returning a failure code (`1`). If it is not the case, the result will be betted and log it into ROS INFO.
+
+After building and having the server running, the client can be ran by executing:
+
+```bash
+ade$ ros2 run examples_rclpp_minimal_client client_main
+```
+
+Both the client and the server should show their logs through ROS info.
 
 
-## 2.5. Actions
+## [2.5. Actions](https://youtu.be/FTA4Ia2vLS8?t=3760)
 - Action Overview
 - Action file review
 - Basic action review
