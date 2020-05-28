@@ -1,9 +1,9 @@
-# Lesson 03: ROS 2 Tooling/CLI
+# Lecture 03: ROS 2 CLI Tooling
 [![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto)
 
 This lesson will be provided by Katherine Scott, Developer Advocate at Open Robotics. The lesson video is available in YouTube:
 
-[![Lesson video](https://img.youtube.com/vi/wcibIqiRb04/0.jpg)](https://www.youtube.com/watch?v=wcibIqiRb04)
+[![Lesson video](https://img.youtube.com/vi/wcibIqiRb04/0.jpg)](https://www.youtube.com/watch?v=wcibIqiRb04&list=PLL57Sz4fhxLpCXgN0lvCF7aHAlRA5FoFr&index=3)
 
 The content of this lesson will be an overview of the Command Line Interface (CLI) tools that ROS 2 provides for building, runing, degubing, introspecting and deploying ROS 2 systems.
 

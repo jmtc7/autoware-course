@@ -1,9 +1,9 @@
-# Lesson 01: Development Environment
+# Lecture 01: Development Environment
 [![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto)
 
 The lecturers are **Dejan Pangercic** (ROS 2 and Autoware Developer and CTO of Apex.AI) and **Tobias Augspurger** (Product Owner at StreetScooter). The lesson video can be accessed from the following link:
 
-[![Lesson video](https://img.youtube.com/vi/XTmlhvlmcf8/0.jpg)](https://www.youtube.com/watch?v=XTmlhvlmcf8)
+[![Lesson video](https://img.youtube.com/vi/XTmlhvlmcf8/0.jpg)](https://www.youtube.com/watch?v=XTmlhvlmcf8&list=PLL57Sz4fhxLpCXgN0lvCF7aHAlRA5FoFr&index=1)
 
 The content of this lesson will be:
 

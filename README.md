@@ -18,7 +18,7 @@ This course is held by [Apex.AI](https://www.apex.ai/autoware-course) and [TheCo
 
 - [Lecture 01](https://github.com/jmtc7/autoware-course/tree/master/01_development_environment): Development Environment: **[Apex.AI](https://www.apex.ai) / [StreetScooter](http://streetscooter.com)**
 - [Lecture 02](https://github.com/jmtc7/autoware-course/tree/master/02_ROS2_101): ROS 2 101: **[Open Source Robotics Foundation](http://openrobotics.org)**
-- Lecture 03: ROS 2 Tooling: **[Open Source Robotics Foundation](http://openrobotics.org)**
+- [Lecture 03](https://github.com/jmtc7/autoware-course/tree/master/03_ROS2_tooling): ROS 2 Tooling: **[Open Source Robotics Foundation](http://openrobotics.org)**
 - Lecture 04: Platform (HW, RTOS, DDS): **[ADLink](http://adlink-labs.tech)**
 - Lecture 05: Architectures of Autonomous Driving Stacks: **[Virtual Vehicle Research Center (TU Graz)](https://www.tugraz.at/en/home)**
 - Lecture 06: Autoware 101: **[Autoware Foundation](https://www.autoware.org)**
