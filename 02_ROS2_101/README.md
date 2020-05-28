@@ -143,13 +143,13 @@ The example code here will be `ros2_example_ws/src/examples/rclcpp/minimal_subsc
 - **Constructor**: Creates a subscription to a topic named `topic` expecting to read messages of type `std_msgs::msg::String`. This subscription will be binded to a callback function named `topic_callback()`, which will be executed each time a new message is received.
 - **Subscription's callback**: It will receive as its only argument a shared pointer to the new message that has been received. The callback will only send through ROS INFO that the message was received and the content of the message.
 
-For the `main()` function, again, the C++ ROS Common Library is initialized (with `init()`), the node is created and spinned until its execution is cancelled and, when it occurs, the program will clean everything and exit (`shutdown()`).
+For the `main()` function, again, the C++ ROS Common Library is initialized (with `init()`), the node is created and spinned until its execution is canceled and, when it occurs, the program will clean everything and exit (`shutdown()`).
 
 By having both the publisher and the subscriber nodes running at the same time, the subscriber will be able to receive the published messages thanks to ROS 2. Any of these nodes' executions can be killed using `Ctrl + C` as with any normal CLI program. 
 
 
 ## [2.4. Services](https://youtu.be/FTA4Ia2vLS8?t=2885)
-### [Overview and basic example](https://youtu.be/FTA4Ia2vLS8?t=2885)
+### [Overview and Basic Example](https://youtu.be/FTA4Ia2vLS8?t=2885)
 Nodes, topics, and messages are the basics of ROS and many robots use only those elements to work. These elements are great to move a lot of data and make quick processing of it. However, there are occasions in which the robots must respond to data with simple behaviours, which is done with ***ROS Services***. They are similar to calling functions but the function is implemented in another node. They are tasks performed synchronously, i.e. they are performed while the thing that is using them waits (they can be called both from nodes or from the command line).
 
 The services are defined inside a folder named `srv` inside the package folder and they specify the inputs and the outputs of the service in a `.srv` file, which uses YAML syntax. A ***service server*** will be also necessary, which will be a node implementing what does the service does with its inputs and how it computes its outputs. The node using the service will be named a *service client*. A **sample service file** can be found at `/opt/ros/dashing/share/example_interfaces/srv/AddTwoInts.srv`, which defines a service whose purpose will be tu return the sum of two integers. The content of the file is the following:
@@ -172,7 +172,7 @@ The `handle_service()` function is what is going to be executed every time the s
 
 Once having the service implemented, a `main()` is needed to make it available for the rest of the ROS environment. This `main()` initializes ROS, creates a node named `minimal_service` (which hosts the service server), creates the server service (named `add_two_ints`) and binds it to `handle_service()` and, as it was done with the publishers and subscribers, this will just spin until the failure or other execution interruption, moment in which everything will be cleaned and shutted down.
 
-### [Building and Running Services](https://youtu.be/FTA4Ia2vLS8?t=3315)
+### [Using Services](https://youtu.be/FTA4Ia2vLS8?t=3315)
 In order to run a service, after building with `colcon` as already done before, the first thing will be to run the node hosting the service server, for which the (already used) syntax will be `ros2 run <package> <service server>`:
 
 ```bash
@@ -199,11 +199,72 @@ Both the client and the server should show their logs through ROS info.
 
 
 ## [2.5. Actions](https://youtu.be/FTA4Ia2vLS8?t=3760)
-- Action Overview
-- Action file review
-- Basic action review
-- Running/calling an action
-- Action client review
-- Running an action server with a client
+Even ROS services are useful to delegate tasks that are very likely to be quickly resolved, if we want to delegate a more complex task that may not be possible to accomplish or that may take longer, *ROS actions* come into play. They are asynchronous remote procedure calls, which means that will not block the caller. For example, asking the robot to go somewhere and do something. On its path to the target position, it can get stuck or lose track of its position so it will not be able to accomplish the task, in which case, if a service was being used, the caller will be blocked because the final response could not be created. However, by sending a request to a ROS action instead, the caller will not be blocked and will be able to know if any error occured because the action will be providing information about itself, so an error message can be sent by the action and received by the caller.
+
+In general, action will be used instead of services when we want to perform something that will take a while or when it is not certain that it will succeed. As with services, an action will have a server and a client will call it. The execution of an action can also be canceled, if a client thought a certain behavior was necessary but later on it relizes that it was not. The process of running an action will be the following:
+
+- Check that the action is available (the server may be down).
+- Send the action request from the client to the server.
+- The server accepts the request (it could decline to take it and this process will end here).
+- The action is executed (in this step, the client may decide to cancel it).
+- During the execution, the server sends feedback of the execution state to the client.
+- When the action has been completed, the result is sent to the client.
+
+More in-depth tutorials about Actions can be found in the [ROS Tutorials](http://wiki.ros.org/actionlib_tutorials/Tutorials).
+
+### [Basic Example](https://youtu.be/FTA4Ia2vLS8?t=4085)
+As an example, we will review an action that allows to request the Nth element of the Fibonacci Sequence, giving as feedback each number until it reaches the final one. Its **definition** can be found at `/opt/ros/dashing/share/example_interfaces/action/Fibonacci.action`. Same as the service definitions, `.action` files follow the YAML format. However, this time, three sections are contained in the file:
+
+```yaml
+# Goal - The input. It will be the wanted order number.
+int32 order
+---
+# Result - The FINAL result. A list of the values until the requested order.
+int32[] sequence
+---
+# Feedback - The INTERMEDIATE results. A list that will be growing ([0], [0, 1], [0, 1, 1], [0, 1, 1, 2], [0, 1, 1, 2, 3], etc.)
+int32[] sequence
+```
+
+It is worth to mention that by building the package containing an action, `colcon` will generate custom message files for the goal, result and feedback of the action.
+
+### [Defining an Action Server](https://youtu.be/FTA4Ia2vLS8?t=4305)
+Regarding the **action server**, an implementation can be found in `/home/jmtc7/ros2_example_ws/src/examples/rclcpp/minimal_action_server/member_functions.cpp`, where a class implementing a node is defined, just like with the service server. It has the following components:
+
+- **Constructor**: Creates the action server itself, binding the functions for the goal receiving, the canceling, and the acceptance).
+- `handle_goal()`: The `uuid` is an ID to keep track of the requests, given that many callers may request the action to be performed. The first thing to do is to evaluate if the server will accept the request. If the goal is over a certain number, the request will be rejected. If it is not, the action will be accepted and executed.
+- `handle_cancel()`: It will only log the cancel request and accept the cancelation.
+- `execute()`: It stores the goal (order to reach) and creates variables for the feedback to be given and for the sequence that will be growing. It will push a `0` and a `1` into the back of the sequence and start pushing back new elements as long as the order is not reached AND ROS is still working (`rclcpp::ok()`). Before computing each new Fibonacci element, it will be checked if a cancelation request is pending, in which case the current sequence will be returned as a result and the action ended. Otherwise, the new Fibonacci element will be computed and pushed back and the updated sequence will be provided as feedback. Once the goal is reached, if ROS is still active, the resulting sequence will be returned as the result.
+- `handle_accepted()`: It creates a new thread with each new accepted action request. This is what makes it possible for two or more nodes to use this action simultaneously.
+
+The `main()` will instantiate the class and spin it until ROS shutdowns.
+
+### [Using Actions](https://youtu.be/FTA4Ia2vLS8?t=4830)
+NOTE: In the video, the service is executed instead of the action, so it fails on the first trial the lecturer does.
+
+It can be built with `colcon` and ran with `ros2 run` as has been seen before with other nodes. It is possible to **send a goal using the command line** by using `ros2 action send_goal` as follows:
+
+```bash
+ade$ ros2 action send_goal /fibonacci example_interfaces/action/Fibonacci {'order: 10'}
+```
+
+Of course, **[an action can also be used from a node](https://youtu.be/FTA4Ia2vLS8?t=5085)**. An action client will usually follow these steps:
+
+- Check that it can connect both to ROS and to the action server.
+- Send the goal.
+- Check if the goal has been accepted by the server.
+- Update the log with the feedback (and cancel action if needed).
+- Receive the final result.
+
+A sample action client can be found in `/home/jmtc7/ros2_example_ws/src/examples/rclcpp/minimal_action_client/member_functions.cpp`. Again, after the header files, a class is used to define the node. These are the elements of the class:
+- **Constructor**: It generates the client and sets a timer of half a second binded to the `send_goal()` function, so it will be called after half a second.
+- `is_goal_done()`: Checks if the goal has been reached.
+- `send_goal()`: It cancels the timer and checks if the client is initialized and the server available. If so, it creates the goal and the sending options (callbacks for the goal response (accepted/declined), feedback, and result) and sends both the goal and the options.
+- `goal_response_callback()`: Whenever the server inform the client if it will handle or not the request. This information will be sent to ROS ERROR or ROS INFO.
+- `feeback_callback()`: Whenever new feedback is available, this function will be executed and send it to ROS INFO.
+- `result_callback()`: `result` will contain a `ResultCode`, which informs of why the action has ended, and the `sequence` itself, as specified in the action definition. The function will send an error to ROS ERROR if the action has not succeeded and, if not, it will log the result on ROS INFO.
+
+Regarding the `main()` function, this time the node will not run until ROS is shutted down, but just until the goal is reached. The client can be executed while the server is running to test the interaction between them.
+
 
 
