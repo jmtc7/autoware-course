@@ -84,7 +84,7 @@ optional arguments:
 It requires a package name and the name of the executable to run. It can also take some prefixes and arguments. For the example that will be used in this lecture, the syntaxis will be:
 
 ```bash
-ros2 run turtlesim turtlesim_node
+ade$ ros2 run turtlesim turtlesim_node
 ```
 
 After running it, a simple simulation with a turtle that draws the path that it has followed is launched. The `turtlesim` package provides other nodes such as `draw_square` or `turtle_teleop_key` that will make the turtle draw squares or make the user able to teleoperate it, respectively. When using some of the additional nodes, they will be running in another terminal session and both will be communicating through ROS topics.
@@ -155,13 +155,13 @@ It is also possible to publish a message manually using `ros2 topic pub <topic_n
 Another useful tool for analyzing system performance is `hz`, which used as `ros2 topic hz <topic_name>`, will provide the highest, lowest and average frequencies at which a topic is being published. It will also say the standard deviation of the average frequency and the used window size. Again, the window size is customizable and it allow a few other flags.
 
 
-## 3.4. [GUI Tooling](https://youtu.be/wcibIqiRb04?t=1730)
+## [3.4. GUI Tooling](https://youtu.be/wcibIqiRb04?t=1730)
 ROS also provides graphical tools for inspecting the system. The collection of QT-based ROS graphical tools is named ***RQT*** (ROS QT). This set of tools can be installed with `sudo apt intall ros-dashing-rqt*` and executed with `rqt`. Once running, from the *Plugins* option of the top bar menu, many things can be monitored. An example would be **Plugins/Topics/Topic Monitor**, which will show a list of topics and the message type published on them. Each of them can be extended to see details of the message components. The bandwidth, publishing frequency and value of the last message is also shown.
 
 RQT also includes another very useful tool, `rqt_graph`. When ran, it will show a graph connecting all the active nodes between them with topics, services and actions. It has several configurations to choose what to visualize and how to do it, but when visualizing everything, the topics will be framed with rectangles, and the nodes with ovals. This is very useful with big and/or complex systems where it is not so easy to visualize the interaction of all the components using only the CLI. It is also very useful for documenting and explaining the systems created by ourselves.
 
 
-## 3.5. [Parameters](https://youtu.be/wcibIqiRb04?t=1990)
+## [3.5. Parameters](https://youtu.be/wcibIqiRb04?t=1990)
 ROS parameters are a collection of parameters that any node can access and modify. A sample usage of this would be an autonomous vehicle driving in roads with a speed limit that may change. There may be one node in charge of reading traffic signs that will update a ROS parameter that represents the speed limit, so that every other node that may need this information can just read it from there. A full and more in-depth tutorial on ROS parameters can be found [here](https://index.ros.org/doc/ros2/Tutorials/Parameters/Understanding-ROS2-Parameters).
 
 ```bash
@@ -220,18 +220,53 @@ As seen in the previous lecture, `ros2 service call` can be used to call a servi
 
 
 ## [3.7. Actions](https://youtu.be/wcibIqiRb04?t=2805)
-- ros2 action list
-- ros2 action info
-- ros2 action send_goal
-- ros2 action show
-- More complex calls
+They are very similar to services, but address asynchronous tasks, which are used for slower procedures or those that can fail, such as asking a robot to wander, search and pick up 10 red balls. When implemented with an action, the caller node will be able to receive a feedback while the action is being executed, such as how many balls have already been found, and it would also be possible to receive success or failure messages. Meanwhile, the caller node will not be blocked and will be able to do other things. However, with a service, the caller will be blocked until the service returns something. Actions also offer the posibility to cancel its execution. They are usually preferred over services because of all these additional functionalities. However, the resulting code will be more complex both to develop and to maintain.
 
-## 3.8. Logging Data: Securing the Bag
-- What is a *bag*?
-- ros2 bag record
-- ros2 bag record selecting topics
-- ros2 bag info
-- ros2 bag play
+```bash
+ade$ ros2 action --help
+usage: ros2 action [-h]
+                   Call `ros2 action <command> -h` for more detailed usage.
+                   ...
 
-## 3.9. Wrap Up and Homework
+Various action related sub-commands
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+Commands:
+  info       Print information about an action
+  list       Output a list of action names
+  send_goal  Send an action goal
+  show       Output the action definition
+
+  Call `ros2 action <command> -h` for more detailed usage.
+```
+
+`ros2 action list` will show all the active actions and, as `service`, it also takes the `-t` flag to show the action types. `ros2 action info` will show the action name and the count of servers and clients. `ros2 action show` will show the components of a given action type.
+
+Once having all this information, it is possible to use `ros2 action send goal` to send a goal to the action server. A sample goal sending would be `ros2 action send_goal -f /turtle1/rotate_absolute turtlesim/action/RotateAbsolute {'theta: 1.70'}`. The `-f` flag will provide echoing of the feedback.
+
+
+## [3.8. ROS bags for Data Logging](https://youtu.be/wcibIqiRb04?t=3390)
+ROS bags allow ROS users to record and replay what is happening in a ROS-based system. This is very useful for testing and debugging because by running the system and recording all the data one, it is possible to use it as many times as are needed without even accessing the real robot, sensors or testing environment. They are also very commonly used to distribute data in public repositories, publications, etc.
+
+```bash
+ade$ ros2 bag --help
+usage: ros2 bag [-h] Call `ros2 bag <command> -h` for more detailed usage. ...
+
+Various rosbag related sub-commands
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+Commands:
+  info    ros2 bag info
+  play    ros2 bag play
+  record  ros2 bag record
+
+  Call `ros2 bag <command> -h` for more detailed usage.
+```
+
+As shown in the help message, it is possible to get `info` about an already created ROS bag, to `play` it or to `record` a new one. When running `ros2 bag record -o <bag_name>`, everything will be recorded and stored in the `<bag_name>` file. However, it is also possible to provide a list of the topics that are wanted to be recorded. Once having a bag to work with, information about it can be obtained using `ros2 bag info <bag_name>` or replayed with `ros2 bag play <bag_name>`.
+
 
