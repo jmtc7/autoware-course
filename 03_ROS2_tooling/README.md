@@ -155,21 +155,71 @@ It is also possible to publish a message manually using `ros2 topic pub <topic_n
 Another useful tool for analyzing system performance is `hz`, which used as `ros2 topic hz <topic_name>`, will provide the highest, lowest and average frequencies at which a topic is being published. It will also say the standard deviation of the average frequency and the used window size. Again, the window size is customizable and it allow a few other flags.
 
 
-## 3.4. [GUI Equivalents](https://youtu.be/wcibIqiRb04?t=1730)
-RQT and rqt_graph
+## 3.4. [GUI Tooling](https://youtu.be/wcibIqiRb04?t=1730)
+ROS also provides graphical tools for inspecting the system. The collection of QT-based ROS graphical tools is named ***RQT*** (ROS QT). This set of tools can be installed with `sudo apt intall ros-dashing-rqt*` and executed with `rqt`. Once running, from the *Plugins* option of the top bar menu, many things can be monitored. An example would be **Plugins/Topics/Topic Monitor**, which will show a list of topics and the message type published on them. Each of them can be extended to see details of the message components. The bandwidth, publishing frequency and value of the last message is also shown.
 
-## 3.5. Parameters
-- ros2 param list
-- ros2 param get
-- ros2 param set
+RQT also includes another very useful tool, `rqt_graph`. When ran, it will show a graph connecting all the active nodes between them with topics, services and actions. It has several configurations to choose what to visualize and how to do it, but when visualizing everything, the topics will be framed with rectangles, and the nodes with ovals. This is very useful with big and/or complex systems where it is not so easy to visualize the interaction of all the components using only the CLI. It is also very useful for documenting and explaining the systems created by ourselves.
 
-## 3.6.Services
-- ros2 service list
-- ros2 service type
-- ros2 service show
-- ros2 service call
 
-## 3.7. Actions
+## 3.5. [Parameters](https://youtu.be/wcibIqiRb04?t=1990)
+ROS parameters are a collection of parameters that any node can access and modify. A sample usage of this would be an autonomous vehicle driving in roads with a speed limit that may change. There may be one node in charge of reading traffic signs that will update a ROS parameter that represents the speed limit, so that every other node that may need this information can just read it from there. A full and more in-depth tutorial on ROS parameters can be found [here](https://index.ros.org/doc/ros2/Tutorials/Parameters/Understanding-ROS2-Parameters).
+
+```bash
+ade$ ros2 param --help
+usage: ros2 param [-h]
+                  Call `ros2 param <command> -h` for more detailed usage. ...
+
+Various param related sub-commands
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+Commands:
+  delete  Delete parameter
+  get     Get parameter
+  list    Output a list of available parameters
+  set     Set parameter
+
+  Call `ros2 param <command> -h` for more detailed usage.
+```
+
+`ros2 param` gives us four options to use ROS parameters:
+
+- Delete a parameter.
+- Get a parameter (e.g. `ros2 param get /turtlesim background_r).
+- List the available parameters (e.g. `ros2 param list`).
+- Set a parameter (e.g. `ros2 param set /turtlesim background_r 0`). NOTE: This may seem broken, but there are a few things that need to be done in order to update the background using the new parameter.
+
+
+## [3.6.Services](https://youtu.be/wcibIqiRb04?t=2255)
+A full tutorial on ROS services is available [here](https://index.ros.org/doc/ros2/Tutorials/Services/Understanding-ROS2-Services). A ROS service, as explained in the second lecture, are synchronous calls for blocking processes that are comonly used for very quick tasks (and, most of the time, that are very unlikely to fail in its execution). A usecase for this could be a service for unlocking the doors in a vehicle.
+
+```bash
+ade$ ros2 service --help
+usage: ros2 service [-h] [--include-hidden-services]
+                    Call `ros2 service <command> -h` for more detailed usage.
+                    ...
+
+Various service related sub-commands
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --include-hidden-services
+                        Consider hidden services as well
+
+Commands:
+  call  Call a service
+  list  Output a list of available services
+
+  Call `ros2 service <command> -h` for more detailed usage.
+```
+
+Similarly as with topics, `ros2 service list` will list all the available services. The `-t` or `--show-types` flag will print where the service is defined, so that it will be possible to know which inputs and outpus they have using `ros2 srv show <service_type>`. `ros2 srv` can be used to get more advanced insights on service types that will provide with more informatin in order to call services with complex messages, which is often needed, such as for spawning a new turtle: `ros2 service call /spawn turtlesim/srv/Spawn "{x: 2, y: 2, theta: 0.2, name: 'larry'}"`.
+
+As seen in the previous lecture, `ros2 service call` can be used to call a service forwarding a certain request to it. In relation to the ROS paramter that was setted in the last section, it is possible to update the background calling the service `/reset` with an empty message as follows: `ros2 service call /reset /std_srvs/srv/Empty`.
+
+
+## [3.7. Actions](https://youtu.be/wcibIqiRb04?t=2805)
 - ros2 action list
 - ros2 action info
 - ros2 action send_goal
