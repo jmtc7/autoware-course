@@ -1,11 +1,11 @@
 # Lecture 01: Development Environment
 [![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto)
 
-The lecturers are **Dejan Pangercic** (ROS 2 and Autoware Developer and CTO of Apex.AI) and **Tobias Augspurger** (Product Owner at StreetScooter). The lesson video can be accessed from the following link:
+The lecturers are [Dejan Pangercic](https://www.linkedin.com/in/dejanpan) (ROS 2 and Autoware Developer and CTO of Apex.AI) and [Tobias Augspurger](https://www.linkedin.com/in/tobias-augspurger-5116b6191) (Product Owner at StreetScooter). The lecture video can be accessed from the following link:
 
-[![Lesson video](https://img.youtube.com/vi/XTmlhvlmcf8/0.jpg)](https://www.youtube.com/watch?v=XTmlhvlmcf8&list=PLL57Sz4fhxLpCXgN0lvCF7aHAlRA5FoFr&index=1)
+[![Lecture video](https://img.youtube.com/vi/XTmlhvlmcf8/0.jpg)](https://www.youtube.com/watch?v=XTmlhvlmcf8&list=PLL57Sz4fhxLpCXgN0lvCF7aHAlRA5FoFr&index=1)
 
-The content of this lesson will be:
+The content of this lecture will be:
 
 - The goals of the course
 - Why is it a relevant course
@@ -13,13 +13,13 @@ The content of this lesson will be:
 - ADE Environment
 - Development Strategies for Safety-Critical Systems
 
-There are provided materials for both the [first part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv.md) and the [second part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv2.md) of the lesson, consisting in MarkDown files with the lesson contents.
+There are provided materials for both the [first part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv.md) and the [second part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv2.md) of the lecture, consisting in MarkDown files with the lecture contents.
 
 ## Section 1. Introduction
 ## [1.1. Course Introduction](https://youtu.be/XTmlhvlmcf8?t=75)
 Currently (May 2020), Autoware.Auto has full **localization** capabilities using LIDAR and GPS, full **perception** of other traffic participants in 2D and 3D (it can classify, infer their velocities and intended path), **motion planning** for relatively simple maneuvers and **information about the environment** in segmented semantic maps that highlight, for example, lanes, crosswalsk, traffic lights, etc. In [this video](https://www.youtube.com/watch?v=kn2bIU_g0oY), some of the Autoware capabilities can be appreciated, such as the car reacting to unexpected situations (obstacle appearing in the road), waiting for pedestrians to go across crosswalks, following a slow vehicle, backward driving and localization.
 
-All the content will be hosted in the [Apex.AI website](https://www.apex.ai/autoware-course), where links to the videos and materials can be found, as well as a very complete syllabus of the course and the sections of each lesson.	 Every Monday a new lecture will be published until the 14 lessons are completed.
+All the content will be hosted in the [Apex.AI website](https://www.apex.ai/autoware-course), where links to the videos and materials can be found, as well as a very complete syllabus of the course and the sections of each lecture.	 Every Monday a new lecture will be published until the 14 lectures are completed.
 
 ### [Importance of Autonomous Systems](https://youtu.be/XTmlhvlmcf8?t=75)
 It is a **megatrend**, as can be clearly appreciated by the increase of investments in this field, which has gone from 0.6 to 5.6 billions of Dollars within 5 years. Another consideration is the potential improvement in both **traffic congestion and road safetyi**.

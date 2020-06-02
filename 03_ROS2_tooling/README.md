@@ -1,11 +1,11 @@
 # Lecture 03: ROS 2 CLI Tooling
 [![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto)
 
-This lesson will be provided by Katherine Scott, Developer Advocate at Open Robotics. The lesson video is available in YouTube:
+This lecture will be provided by [Katherine Scott](https://www.linkedin.com/in/katherineascott), Developer Advocate at Open Robotics. The lecture video is available in YouTube:
 
-[![Lesson video](https://img.youtube.com/vi/wcibIqiRb04/0.jpg)](https://www.youtube.com/watch?v=wcibIqiRb04&list=PLL57Sz4fhxLpCXgN0lvCF7aHAlRA5FoFr&index=3)
+[![Lecture video](https://img.youtube.com/vi/wcibIqiRb04/0.jpg)](https://www.youtube.com/watch?v=wcibIqiRb04&list=PLL57Sz4fhxLpCXgN0lvCF7aHAlRA5FoFr&index=3)
 
-The content of this lesson will be an overview of the Command Line Interface (CLI) tools that ROS 2 provides for building, runing, degubing, introspecting and deploying ROS 2 systems. This lecture's motivation is to share knowledge on how to get familiar with systems that other people has developed or get insights on how our own ones are working.
+The content of this lecture will be an overview of the Command Line Interface (CLI) tools that ROS 2 provides for building, runing, degubing, introspecting and deploying ROS 2 systems. This lecture's motivation is to share knowledge on how to get familiar with systems that other people has developed or get insights on how our own ones are working.
 
 The provided materials in *reStructuredText* can be found in the Apex.AI's [autowareclass2020 repository](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/03_ROS_Tooling/Lesson3CLI.rst), in GitLab. They are also able in PDF.
 
