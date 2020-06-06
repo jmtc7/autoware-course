@@ -210,11 +210,77 @@ DDS is also **platform independent**, being able to run in enterprise, desktop, 
 
 
 ### [4.3.2. DDS Foundations](https://youtu.be/IyycN6ldsIs?t=4050)
+The idea is to create a *data space* in which application can write and read data enjoying both spatial and temporal decoupling. *Spatial decoupling* meaning that the data consumer can get data and work with it even if the producer has already deleted it from its system. *Temporal decoupling* means that the writers will not be influenced by how many readers are (or if any exists).
+
+The data is modeled in *topics*, which is some sort of *class*, being defined by the topic's name, the type of information published in it and a Quality of Service (QoS) that captures the non-functional properties of the information. QoS allos to express temporal and availability constraints for the data.
+
+Given that the *data space* that DDS creates is decentralized, there are **no bottlenecks or single points of failure**. Another feature of DDS is **dynamic discovery**, which get to discover each other (the publisher finds the subscriber and viceversa), isolating applications from network topology and connectivity details. The **adaptive connectivity** offered by DDS is related to this. It will automatically choose the most effective way of sharing data between nodes. For example, when one application is producing data and only one is reading it, *unicast* will be probably chosen as the way to transmit it. If another reader appears and both can read from the same multicast IP address, communication will switch from *unicast* to *multicast* to optimize the network usage.
+
+#### [4.3.2.1. Lab 01. First Application](https://youtu.be/IyycN6ldsIs?t=4315)
+For the labs, [Eclipse Cyclone DDS](https://github.com/eclipse-cyclonedds/cyclonedds) will be used, that is an open-source DDS implementation that was started aiming to be the best one and the Go-To option. Two C++ programs will be written, one for writing and another one for reading data, both of them using DDS.
+
+The writer will look like this (assuming a few declarations before it):
+
+```cpp
+#include <dds/dds.hpp>
+
+int main(int, char**)
+{
+  dds::domain::DomainParticipant dp(0);
+  dds::topic::Topic<Meter> topic("SmartMeter");
+  dds::pub::Publisher pub(dp);
+  dds::pub::DataWriter<Meter> dw(pub, topic);
+
+  while(!done)
+  {
+    auto value = readMeter();
+    dw.write(value);
+    std::this_thread::sleep_for(SAMPLING_PERIOD);
+  }
+
+  return 0;
+}
+```
+
+A domain participant, topic, publisher and data writer that uses this publisher to publish on the declared topic are created. The `while` loop will periodically read a meter, write the value with the data writer and wait until the next sample has to be taken.
+
+On the other side, the reader will be:
+
+```cpp
+#include <dds/dds.hpp>
+
+int main(int, char**)
+{
+  dds::domain::DomainParticipant dp(0);
+  dds::topic::Topic<Meter> topic("SmartMeter");
+  dds::pub::Subscriber sub(dp);
+  dds::pub::DataReader<Meter> dr(sub, topic);
+
+  auto samples = dr.read();
+  std::for_each(samples.begin(), samples.end(), [](Sample<Meter>& sample)
+  {
+    std::cout << sample.data() << std::endl;
+  });
+
+  return 0;
+}
+```
+
+It will use the same topic type (`Meter`) and name (`SmartMeter`), but this time a subscriber and a node reader are created. Next, the program will iterate through the received samples, printing the data on them during the process. There are other options such as waiting for data to be available or defining a callback that will be triggered each time new data is available.
+
+In order to run this example, an implementation of DDS must be installed in our local machine. As said before, Cyclone DDS will be the chosen one, which can be downloaded from its [GitHub repository](https://github.com/eclipse-cyclonedds/cyclonedds), which also contains detailed instruction on its installation. The C++ API will also be needed to use DDS from C++ programs. Instructions concerning this are also included in the repository. The full C++ files and CMakeLists files are shown in the video. Once having all together in a directory, they can be built as a normal C++ project:
+
+```bash
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+```
+
+After this, the writer and the reader must be executed in two different terminals.
 
 
-
-
-### 4.3.3. Advanced DDS Concepts
+### [4.3.3. Advanced DDS Concepts](https://youtu.be/IyycN6ldsIs?t=4730)
 
 
 
