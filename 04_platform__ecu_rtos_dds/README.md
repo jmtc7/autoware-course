@@ -1,7 +1,7 @@
 # Lecture 04: Platform (ECUs, RTOS, and DDS)
 [![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto)
 
-This lecture is provided by [Stephane Strahm](https://www.linkedin.com/in/stephanestrahm/), Product Manager at Kalray, and by [Angelo Corsaro](https://www.linkedin.com/in/corsaro/), from AD-Link. The lecture is available in YouTube:
+This lecture is provided by [Stephane Strahm](https://www.linkedin.com/in/stephanestrahm/) (Product Manager at Kalray) and by [Angelo Corsaro](https://www.linkedin.com/in/corsaro/) (AD-Link CTO). The lecture is available in YouTube:
 
 [![Lecture video](https://img.youtube.com/vi/IyycN6ldsIs/0.jpg)](https://www.youtube.com/watch?v=IyycN6ldsIs&list=PLL57Sz4fhxLpCXgN0lvCF7aHAlRA5FoFr&index=4)
 
@@ -177,10 +177,48 @@ As an applications developer for protocol layers on top of an RTOS, such as DDS 
 
 
 ## [4.3. Data Distribution Service (DDS)](https://youtu.be/IyycN6ldsIs?t=3335)
-### 4.3.1. DDS Foundations
+In this section, the foundations of DDS will be introduced, as well as some advanced concepts. Some of the most useful DDS features appliable to robots applications (and, in general, distributed RT systems) will be covered aswell.
 
-### 4.3.2. Advanced DDS Concepts
 
-### 4.3.3. DDS Features for Robotic Applications
+### [4.3.1. The DDS Standard](https://youtu.be/IyycN6ldsIs?t=3375)
+DDS is a standard technology for ubiquitous, interoperable, secure, platform independent and RT **data sharing** across network connected devices. It was introduced in 2004 and improved until the 2010's DDSI-RTPS 2.1 version, which has been the main version present for the last 10 years. After it, some improvements regarding the types and its integration with newer C++ standards were made until the present 2020.
+
+The Data Distribution Service (DDS) standard can be divided by layers. It sits on top of an IP transport (after the (1) physical and (2) data link layers). After the (3) network layer, comes the (4) transport one, which is based in UDP and TCP (TCP is not in the standard yet). The ISO OSI's 5th layer, the *session* one, is the big part of the standard and what guarantees interoperability (DDSI-RTPS). On top of it, the DDS layer is located, providing abstraction for the DDS primitives and the API (including other specifications such as RPC, security and X-types). Applications in different languages will use the DDS API to use DDS.
+
+**Remote Procedure Calls** (DDS-RPC) extend the DDS's abstraction to support distributed service definition, giving DDS users the hability to run traditional client-server architectures on top of DDS. It is only an added features and its usage will depend on the application, but one of DDS's advantages is to promote data centricity and decoupled distributed systems. By using RPC, the problems of client-server designs will be introduced in the applications, adding concerns about availability and fault tolerance, among others.
+
+**DDS Security** defines a data-centric security architecture, allowing authentication, access control, cryptography and logging, among other things, in a *plug-in-based* way.
+
+Regarding **eXtensible Types** (DDS X-Types), it was a major innovation for DDS because, before, DDS typing was nominal, becoming structural after the addition of this specification. The difference is that *nominal* type systems will compare (and operate assigning, adding, etc.) instances based on their name, hwile *structural* ones will do so based on their structures. This is, if two classes have the same components, systems with nominal typing will not allow them to interact because they have different names, while structural ones will allow it unless there is some strucutral difference. *Nominal* typing will be more convinient when two classes may be identical but serve different purposes. Object-Oriented Languages (OOLs) are usually nominally typed (C++, Java, Swift, etc.), while functional languages tend to the structural typing (OCaml, Haskell, Elm, etc.).
+
+#### [4.3.1.1. DDS Applications](https://youtu.be/IyycN6ldsIs?t=3780)
+DDS usage is widely spreaded. For years, DDS has been used for sharing data across different component of **autonomous vehicles**, particularly in agriculture. **Smart cities**-related projects also use DDS for data sources and sinks and even to control equipment. **Smart grids** for the energy industry use DDS to integrate and normalise data sharing amond different elements of a smart grid (e.g. to align the phase of the current periodically at high frequency). **Smart green houses** use DDS to monitor and control the I/O of their systems. DDS is the core of many **combat systems**, specially in the naval sector, distributing soft and hard RT sensor and actuator data. The **NASA's launch systems** use DDS to stream messages at almost two thirds that Twitter needs. DDS is also used for sharing flight data in **air traffic control** centers. The **NASA's SMART NAS**, a project to improve air traffic management, also uses DDS. **Unmanned Air Vehicles** (UAVs) use DDS to distribute information of several thousands of sensor targets (first in the control station but now also in the aircrafts). **Airbus's simulators** manage all the data in DDS (converting it to the ARINC429 bus with the applications). **Smart factories** integrate data horizontally and vertically across SCADA layers using DDS. The **ELT telescope** control 100000 mirrors at 100 Hz with DDS. **Medical devices** share data between aquisition, processing and visualization with DDS. DDS is very used in **robotics**, being the heart of ROS 2 and the base for other proprietary systems of individual vendors.
+
+#### [4.3.1.2. DDS Advantages](https://youtu.be/IyycN6ldsIs?t=3935)
+DDS is used in these applications because its advantages:
+
+- High level and powerful abstractions.
+- Easiness to build highly modular and distributed systems.
+- Easiness to solve hard distributed system problems, such as:
+  - Fault-tolerance
+  - Scalability
+  - Asymmetry. i.e. having components with very different computing capabilities working together in the system (regarding network latency or bandwidth).
+
+In general, DDS allows to seal together very heterogeneous environments while keeping a single, elegant and efficient abstraction.
+
+DDS is also **platform independent**, being able to run in enterprise, desktop, embedded, RT, mobile and web platforms. Moreover, DDS applications can be written in several programming languages (**polyglocy**), most vendors providing APIs for C/C++, Python, Java, Scala, .net, JavaScript, etc.
+
+
+### [4.3.2. DDS Foundations](https://youtu.be/IyycN6ldsIs?t=4050)
+
+
+
+
+### 4.3.3. Advanced DDS Concepts
+
+
+
+### 4.3.4. DDS for Robotics
+
 
 
