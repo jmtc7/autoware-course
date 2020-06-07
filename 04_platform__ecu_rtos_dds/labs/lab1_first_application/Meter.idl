@@ -1,0 +1,18 @@
+module tutorial
+{
+	enum UtilityKind
+	{
+		ELECTRICITY,
+		GAS,
+		WATER
+	};
+
+	struct Meter
+	{
+		string sg;
+		UtilityKind utility;
+		float reading;
+		float error;
+	};
+	#pragma keylist Meter sn
+};
