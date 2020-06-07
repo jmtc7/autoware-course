@@ -7,7 +7,7 @@ This lecture will be provided by [Katherine Scott](https://www.linkedin.com/in/k
 
 The content of this lecture will be an overview of the C++ API for ROS 2. The ADE environment will be used for the lecture, which is a *dockerized* container of ROS. During the lecture, most of the ROS 2 Dashing tutorials will be installed and some of them will be explained in more detail, providing hints, tips and tricks during the process. Also, the ROS 2 CLI interface will be introduced, but the next lecture will cover it in more detail.
 
-The provided slides in PDF format can be found in the Apex.AI's [autowareclass2020 repository](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/02_ROS2_101/lesson2.pdf), in GitLab.
+The provided slides in PDF format (and in rst and html) can be found in the Apex.AI's [autowareclass2020 repository](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/02_ROS2_101/lesson2.pdf), in GitLab. The PDF file is included in the *resources* folder of this directory.
 
 
 ## [2.1. Introduction](https://youtu.be/FTA4Ia2vLS8?t=170)

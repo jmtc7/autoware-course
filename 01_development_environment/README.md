@@ -13,7 +13,7 @@ The content of this lecture will be:
 - ADE Environment
 - Development Strategies for Safety-Critical Systems
 
-There are provided materials for both the [first part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv.md) and the [second part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv2.md) of the lecture, consisting in MarkDown files with the lecture contents.
+There are provided materials for both the [first part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv.md) and the [second part](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/01_DevelopmentEnvironment/devenv2.md) of the lecture, consisting in MarkDown files with the lecture contents and their PDF versions, which are included in the *resources* folder of this directory.
 
 ## Section 1. Introduction
 ## [1.1. Course Introduction](https://youtu.be/XTmlhvlmcf8?t=75)
@@ -181,7 +181,7 @@ not found: "/opt/AutowareAuto/share/spinnaker_camera_node/local_setup.bash"
 
 The result of this, without including the two last steps for clarity, should be a visualization of the robot (Lexus RX 450h), the LIDAR sensors, their frames, and the raw LIDAR data converted to point clouds, as can be appreciated in the next GIF (it is also a link to the full 8 minutes demo, hosted in YouTube:
 
-[![Demo visualization](lidar_visualization.gif)](https://www.youtube.com/watch?v=Ooxcm8KTMS8&list=PLBYQePjTMEGHIbWg2AF7mJLnxNA9-PSab&index=1)
+[![Demo visualization](resources/lidar_visualization.gif)](https://www.youtube.com/watch?v=Ooxcm8KTMS8&list=PLBYQePjTMEGHIbWg2AF7mJLnxNA9-PSab&index=1)
 
 
 ### [Editing and Compiling Code](https://youtu.be/XTmlhvlmcf8?t=2550)

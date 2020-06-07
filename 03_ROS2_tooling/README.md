@@ -7,7 +7,7 @@ This lecture will be provided by [Katherine Scott](https://www.linkedin.com/in/k
 
 The content of this lecture will be an overview of the Command Line Interface (CLI) tools that ROS 2 provides for building, runing, degubing, introspecting and deploying ROS 2 systems. This lecture's motivation is to share knowledge on how to get familiar with systems that other people has developed or get insights on how our own ones are working.
 
-The provided materials in *reStructuredText* can be found in the Apex.AI's [autowareclass2020 repository](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/03_ROS_Tooling/Lesson3CLI.rst), in GitLab. They are also able in PDF.
+The provided materials in *reStructuredText* can be found in the Apex.AI's [autowareclass2020 repository](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/03_ROS_Tooling/Lesson3CLI.rst), in GitLab. They are also able in PDF and html. The PDF is included in the *resources* folder of this directory.
 
 ## [3.1. Setting Up the Environment](https://youtu.be/wcibIqiRb04?t=250)
 As in the previous lecture, ROS 2 Dashing will be used, which is supported for Ubuntu 18.04 machines. Following the steps explained in the [first lecture](https://github.com/jmtc7/autoware-course/tree/master/01_development_environment), these are the commands that need to be executed before continuing:
