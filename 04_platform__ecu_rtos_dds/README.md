@@ -281,10 +281,79 @@ After this, the writer and the reader must be executed in two different terminal
 
 
 ### [4.3.3. Advanced DDS Concepts](https://youtu.be/IyycN6ldsIs?t=4730)
+A sample topic could be named *LightBulb*, being of type *LightBulbState*, which would contain its serial number, luminosity, hue and if it is on or off. It will be published/readed with some QoS. The type would be defined as follows:
+
+```cpp
+struct LightBulbState
+{
+  string sn;
+  float luminosity;
+  long hue;
+  boolean on;
+};
+#pragma keylist LightBulbState sn
+```
+
+The last `pragma` line marks the `sn` component (serial number) as the *key value* of the topic, meaning that for each topic whose `sn` attribute is different, we will have a **topic instance**. This means that publishing in a LightBulb topic with the same `sn` but different `luminosity`, `hue` and `on` values, will create different samples in the same topic, while changing the `sn` would generate a new independent instance of the topic, representing another light bulb. DDS provides ways to manage the **life cycles of the instances**, making it possible to detect when they are no longer relevant for the system and, thus, dispose them.
+
+All the information in DDS lives in a *domain*, organised in *partitions*. The domain can not be crossed and each sample of a topic instance will be read and written using one or more partitions.
+
+#### [4.3.3.1. DDS Entities](https://youtu.be/IyycN6ldsIs?t=4990)
+DDS provides **entities** to control where and what data is written/read. The key DDS entities are:
+
+- **Topic**: Where the data is published at/read from.
+- **Domain Participant** (DP): It gives access to a domain.
+- **Publishers and subscribers** (pub/sub): They use the domain participant they are associated with to choose where to write/read data. i.e. they define which partition is going to be used.
+- **Data writer and reader** (DW/DR): These are the entities that *choose* which data the application will work with. It is through them through what the data is published/read into the partition defined by the pub/sub inside the domain chosen with the DP.
+- **QoS Policies**: Control *how* data is shared and, therefore, influence how the resources are utilised.
+
+Therefore, the **matching model** would be defined as follows: For data to flow from a DW to a DR, they need to:
+
+- Be in the same domain. i.e. their DPs are providing them with access to the same domain.
+- The DR's sub and the DW's pub must be using the same partition.
+- Their QoS policies offered by the DW must exceed or, at least, match those requested by the DR. 
+
+Regarding the **storage model**, each DW and DR is associated a *sample cache*. DDS will project content of the DW's cache in the matching DRs' ones. Therefore, all operations are local and, in most cases, non-blocking. Reading will never be blocking and writting will only block if there are not enaough resources available (which, depending on the case, could be fixed with the QoS settings).
+
+#### [4.3.3.2. Content Awareness](https://youtu.be/IyycN6ldsIs?t=5265)
+It can be the case of wanting to receive all data or only a subset of this data. This is why DDS provides *content filtering*. It can be used to project in the local cache only the data satisfying a certain condition in order to avoid useless processing. For example, a road flash radar for speed monitoring will only be interested in processing the information if the speed (subset of all the aquired data) is over the speed limit of the road where it is.
+
+Another DDS feature are the **queries**. They can be used to select a subset of data from the data that is already in the local cache. Again, an SQL predicate will be used to get only the subset of data satisfying a certain condition.
+
+#### [4.3.3.3. Stream Durability](https://youtu.be/IyycN6ldsIs?t=5415)
+*Stream durability* refers to which data will be available and under which circumstances will it happen. This can be controlled using QoS settings, that make it possible to retain and make available *old* data for *late joiners* (i.e. replay data). It is possible to store only the last sample, the last *n* samples or even every sample ever written. Durability can be classified in three types:
+
+- **Volatile Durability**: No durability. Each new comer will be able to access only the data published while it is subscribed.
+- **Transient Durability** (or local): A certain amount of data will be available for late joiners as far as the data producer/publisher is still running.
+- **Durable Durability**: A certain amount of data will be available wether or not the producer is running.
+
+#### [4.3.3.4. Stream Reliability](https://youtu.be/IyycN6ldsIs?t=5560)
+In DDS, there are different reliability levels, which are:
+
+- **Best Effor Reliability**: An arbitraty subsequence of the written samples will be delivered. The data drop can be caused by network loss or flow control issues.
+- **Last N-Values Reliability**: The default *reliable reliability* in DDS. Under stationary conditions, it guarantees to receive the last published n-samples. Samples outside this n-values history, may (or may not) be dropped for flow or resource control.
+- **Reliable Reliability**: It is also possible to have TCP/IP-like reliability in DDS, in which every sample is delivered. However, given that this could cause infinite resource requeriments or blocking time, these aspects can be managed with QoS settings. This is mostly used for events that happen rarely, such as alarms.
+
+#### [4.3.3.5. Fault-Tolerance](https://youtu.be/IyycN6ldsIs?t=5755)
+DDS provides **failure detections** features to detect conventional crashes as well as performance ones. They are detected using the *liveliness* and the *deadline* policies, respectively. The subscriber will be notified when a *traditonal fault* is detected or when some data is not received within the expected timeframe.
+
+QoS provides a **fault-masking** mechanism that allows to *replicate* sources transparently switching over to another source when either a traditional fault or performance failure is detected.
 
 
+### [4.3.4. Further Details](https://youtu.be/IyycN6ldsIs?t=5815)
+#### [4.3.4.1. QoS Policies](https://youtu.be/IyycN6ldsIs?t=5815)
 
-### 4.3.4. DDS for Robotics
+
+#### 4.3.4.2. DDS in Robotics
+
+
+#### 4.3.4.3. QoS Modeling Idioms
+
+
+#### 4.3.4.4. Performance 
+
+
+#### 4.3.4.5. Lab 3. Performance Evaluation
 
 
 
