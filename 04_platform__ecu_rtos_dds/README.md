@@ -342,18 +342,93 @@ QoS provides a **fault-masking** mechanism that allows to *replicate* sources tr
 
 ### [4.3.4. Further Details](https://youtu.be/IyycN6ldsIs?t=5815)
 #### [4.3.4.1. QoS Policies](https://youtu.be/IyycN6ldsIs?t=5815)
+DDS provides with more than 20 standard QoS policies, which are often combined to achieve a certain behavior. QoS policies can be classified in:
 
+- **Immutable** policies: Once setted, it can not be changed.
+- **RxO** policies (Request vs Offer): Policies that impact end-to-end behaviors, in which the sender must match or exceed the requirements specified by the reader. 
+- **Local** policies: They are local policies that do not affect end-to-end behaviors.
 
-#### 4.3.4.2. DDS in Robotics
+**RxO Policies** are the most common. The ones in this category are durability, destination order, reliability, latency budget, deadline, ownership, liveliness and presentation.
 
+#### [4.3.4.2. DDS in Robotics](https://youtu.be/IyycN6ldsIs?t=5895)
+DDS matches very well with robotics because the following characteristics:
 
-#### 4.3.4.3. QoS Modeling Idioms
+- Data-centric abstraction.
+- Descentralised architecture, avoiding potential fatal failures due to single-point failures.
+- Data intensive architecture.
+- RT behavior by setting deadlines, detecting performance failure, using replicated sources monitoring liveliness, etc.
+- Performance.
+- QoS-driven non-functional properties that can be programatically expressed.
 
+**Temporal properties** are particularlly important for robotics communications, specially when it comes to control modules. There are 5 QoS policies that allow to control **thoughput latency and trade-off**. These are:
 
-#### 4.3.4.4. Performance 
+- The inbound throughput can be limited by using `TimeBasedFilter`, limiting the minimum arrival time of the data.
+- The trade-offf (throughput and latency) can be controleld with the `LatencyBudget`. If it is setted to 0, data will be sent on the network inmediately, optimizing latency, but it may harm the throughput. This can be incremented to choose to wait more and send bigger packages instead of more smaller ones.
+- `Deadline` and `TransportPriority` allows to choose between producing data (and receiving it quicker) or assigning priority to certain data.
 
+Regarding **data availability**, there are 4 QoS policies to control it:
 
-#### 4.3.4.5. Lab 3. Performance Evaluation
+- **Lifespan**: It decides when does the system's garbage collector collects the data.
+- **History**: Specifies how many samples of a topic instance will be kept in the cache.
+- **Durability**: Fow how long the history will be kept.
+- **Durability Service**: Defines if the history will be available for late joiners even when the producer is gone.
 
+The **reader cache** can be controlled by:
+
+- **History**: Again, to decide how many samples will be stored.
+- **Resource Limits**: Memory limits for the cache.
+- **Reader Data Lifecycle**: Control the garbage collection of disposed instances.
+- **Destination Order**: To decide which data will be inputted in the reader's cache if there are multiple writers writting in the same topic instance.
+
+[This article](https://index.ros.org/doc/ros2/Concepts/DDS-and-ROS-middleware-implementations/) goes into more detail about how to use DDS in ROS 2.
+
+#### [4.3.4.3. QoS Modeling Idioms](https://youtu.be/IyycN6ldsIs?t=6155)
+When developing a system that uses DDS, it is key to identify what is the **state** of the system and which are its **events**. An *state* is something that is always present, time-continous, such as the temperature of a room. *Events* are discrete, such as the temperature being higher than 25 ºC or a collision alert.
+
+States can be classified in:
+
+- **Soft States**: Periodically updated states, such as some data produced periodically by a sensor. The QoS combination to model a soft state would be:
+  - Reliability      -> BestEffort
+  - Durability       -> Volatile
+  - History          -> KeepLast(n) *[most of the time, n=1]*
+  - Deadline         -> udatePeriod
+  - LatencyBudget    -> updatePeriod/3 *[rule of thumb]*
+  - DestinationORder -> SourceTimestamp *[if multiple writers will write in the same instance]*
+- **Hard States**: They are sporadically updated and they usually require temporal persistance. An example would be some sort of robot configuration that takes a lot to compute, e.g. 2h. The QoS for these states would be:
+  - Reliability         -> Reliable
+  - Durability          -> Transient | Persistent
+  - History             -> KeepLast(n) *[most of the time, n=1]*
+  - DestinationOrder    -> SourceTimestamp *[if multiple writers will write in the same instance]*
+  - WriterDataLIfecycle -> autodispose_unregistered_instances = false
+
+An **event** will be represented as follows:
+
+- Reliability         -> Reliable
+- Durability          -> any *[depends on system requirements]*
+- History             -> KeepAll *[on both DataWriter and DataReader]*
+- DestinationOrder    -> SourceTimestamp
+- WriterDataLifecycle -> autodispose_unregistered_instances = false
+- ResourceLimits      -> *[define appropriate bounds]*
+
+#### [4.3.4.4. Performance](https://youtu.be/IyycN6ldsIs?t=6455)
+This will be evaluated, once again, in the context of [Cyclone DDS](https://github.com/eclipse-cyclonedds/cyclonedds). It is one of the top performing DDS implementations available, providing a **latency** of over 20 microseconds when working with small payload sizes (~10 bytes), which grows with the payload size up to over 10k microseconds with payloads of around 1 MB. The **throughput** is able to saturate a 1 GB/s network from over 1KB of payload in advance.
+
+#### [4.3.4.5. Lab 2. Performance Evaluation](https://youtu.be/IyycN6ldsIs?t=6520)
+This lab will be about evaluate DDS performance. Starting from a checked out clone of the [Cyclone DDS repository](https://github.com/eclipse-cyclonedds/cyclonedds) and building it with:
+
+```bash
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+```
+
+This will build a series of examples, throughout and latency tests and a DDS benchmarking tool (`ddsperf`). This benchmark can be used to run the throughout and latency tests. Once the general build is finished, all the executables will be located under the `/bin` directory, so the benchmark can be executed by running `./bin/ddsperf`, which will print some help on how to use the tool.
+
+In order to perform a basic **throughout test**, a subscriber and a publisher are needed, which can be run by using `./bin/ddsperf sub` and `./bin/ddsperf pub size 1k` in other two terminals. The ammount of data received per second will be printed (amongst other statistics) in the subscriber terminal.
+
+To run a **latency test**, the commands to be executed in each terminal are `./bin/ddsperf pong` and `./bin/ddsperf ping`. Again, statistics will be printed in each command prompt.
+
+On [this page](https://index.ros.org/doc/ros2/Concepts/DDS-and-ROS-middleware-implementations/) there is information about how to choose Cyclone DDS (or other) as the default DDS implementation.
 
 
