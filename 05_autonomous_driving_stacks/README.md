@@ -20,7 +20,7 @@ The provided PDFs can be found in the Apex.AI's [autowareclass2020 repository](h
 ## [5.1. Autonomous Driving Stacks](https://youtu.be/nTI4fnn2tuU?t=45)
 During this first part, the hihg level architecture of Autonomous Vehicles (AVs) will be introduced, as well as the signal flow and timing requirements. The control layer will be seen on more depth, as well as the difference between concepts such as *safety critical*, *mission critical*, *load critical* and *mixed critical* systems.
 
-### 5.1.1. Architecture of AD Stack
+### [5.1.1. Architecture of AD Stack](https://youtu.be/nTI4fnn2tuU?t=45)
 The AD stack consist in several layers that can be grouped in the *sub-stacks* represented by the following picture (extracted from the official lecture resources):
 
 ![Layers of the AD stack](multimedia/stack_layers.png)
@@ -118,17 +118,61 @@ The current Apollo 5.0 supports four layers: Open Vehicle Certification Platform
 
 ![Layers of the Apollo stack](multimedia/apollo_layers.png)
 
+
 ---
 
 ## Second part
-## [5.2. Integration of Autoware.AI in a Research Vehicle](https://youtu.be/nTI4fnn2tuU?t=2465)
-### 5.2.1. What is Needed?
-### 5.2.2. Hardware and Integration Overview
-### 5.2.3. Providing AD Functionality for Research Projects
+## [5.2. Autoware.AI Integration in a Research Vehicle](https://youtu.be/nTI4fnn2tuU?t=2465)
+This section will cover the Autoware installation, the hardware components of the vehicle, the software requirements and a demonstration of the mapping process of Autoware.AI. The modules of Autoware.AI can be found in its [GitLab](https://gitlab.com/autowarefoundation/autoware.ai), being the main ones the [core_perception](https://gitlab.com/autowarefoundation/autoware.ai/core_perception), [core_planning](https://gitlab.com/autowarefoundation/autoware.ai/core_planning) and [simulation](https://gitlab.com/autowarefoundation/autoware.ai/simulation) ones. Autoware.AI is scheduled to go into maintenance mode at the end of 2020 and its end-of-life will be at the end of 2022.
+
+### [5.2.1. Autoware.AI Installation](https://youtu.be/nTI4fnn2tuU?t=2610)
+Even the requirements will depend a lot on which stack components are used, the general recommended system specifications are:
+
+- 8 CPU cores
+- Nvidia GPU
+- 32 GB RAM
+- 64 GB storage
+
+It can run on a virtual machine and the installation can be done by a source build or with docker, which is the recommended option. The installation steps are detailed [here](https://gitlab.com/autowarefoundation/autoware.ai/autoware).
+
+### [5.2.2. Hardware Example: Ford Fusion](https://youtu.be/nTI4fnn2tuU?t=2705)
+Autoware was integrated in a research vehicle to evaluate the capabilities of this software. They started setting up the hardware and simulation and then kept on going with the mapping, localization, object detection (all these 3 with LiDAR), HD mapping and navigation and planning, respectively.
+
+The used Ford Fusion was only modified to be able to steer, brake and throttle electronically. A 64 layers LiDAR was also added on top of the car and a normal x86 computer was used as the computing platform. An automotive computing platform from [TTTech](https://www.tttech.com/) was also used. Network components, a high-precission IMU and an RTK GPS system are also integrated. In the current version of the car, the sensors augmented to the one represented in the following diagram (extracted from the official materials):
+
+![Additional Ford Fusion Hardware](multimedia/ford_hw.png)
+
+There are two full HD front cameras providing normal images, the 4 LiDARs have a 90º field of view and 360º rotation. The ones on the sides allow detections in death angles for the other ones. Obviously, the one in the front provides a lower point of view that scapes from the rest of them. The two RTK GPS antennas provide a very precise GPS localization (less than 5cm error). The ADAS-KIT allows the vehicle control (throttle, steer and brake). The radar on the front is specially usefur for motorway driving. There is another camera, but this one provides directly object data instead of images (cars, pedestrians, lane marks, traffic signs, etc). These last 3 components use the CAN protocol, while the rest of them uses Ethernet.
+
+
+### [5.2.3. Autoware's software components](https://youtu.be/nTI4fnn2tuU?t=3095)
+Regardless if the car is being simulated or a real one is being used, these will be the software components Autoware makes available:
+
+- **Vehicle Interface** (if using a real vehicle): Through the node `dbw_node`.
+- **LiDAR Mapping**: Through the node `ndt_mapping`.
+- **LiDAR Localization**: Through the node `ndt_matching`.
+- **LiDAR Object Detection**: Through the nodes `euclidean_cluster and `ukf_tracker`.
+- **Campus Mapping**: Through the Tier IV's *Vector Mapper*.
+- **Waypoint Follower**: Through the Vector Zero's *Road Runner* and the nodes `pure_pursuit` and `mpc_follower`.
+- **Global Planner**: Through the node `gloabl_planner`.
+- **Local Planner**: Through the nodes `local_planner`, `freespace_planner` and `open_planer`.
+
+Regarding the **localization**, it is required to place the car in the HD Map (go-to technique for navigation in AVs). GPS is an option but it usually introduced too much error (specially when sourrounded by, for example, skyscrapers). Autoware offers a Normal Distributions Transform (NDT) matching, based on LiDAR measurement. Given the huge ammount of data a sensor like this can provide (e.g. 64 layers of points at 20 Hz) and the high computational requirements of the algorithm, the usage of ~1 meter big voxel grids is recommended. This component is implemented [here](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/tree/master/src/localization). This algorithm tries to register the currently perceived point cloud with a pre-recorded one (map) to estimate the sensor's (and, therefore, the car's) position.
+
+The **object detection and tracking** allows to avoid collisions and decide the ego car's behavior. Autoware provides several algorithms for these purposes both for camera and LiDAR data. A typical sample LiDAR data processing pipeline would be take the raw measurements, remove the one corresponding to the ground, generate clusters from the pointcloud and track each of the clusters. Instead of being tracked, they can be processed to be classified. More information in the [perception folder](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/tree/master/src/perception) of the GitLab repository.
+
+The **planning** has more hierarchy levels. It starts with the route planning (the global route to be followed to go from the point A to the point B, e.g. going from Vienna to Berlin). Next, the motion planning considers the local obstacles, required speed variations, driving rules, etc. Autoware implements *Open Planner*, *Lane Planner* and *A Star* for this last purpose. These tools can be found in the [motion/planning](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/tree/master/src/motion/planning), [motion/control](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/tree/master/src/motion/control) and [external](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/tree/master/src/external) folders of the GitLab.
+
+Finally, **mapping** is used with two purposes: 1) mapping for localization (withour RTK-GPS), that matches 64 layer LiDAR measurements with NDT to provide a pointcloud of the environment, and 2) HD map for path planning, which is built using a [browser-based tool](https://tools.tier4.jp/feature/vector_map_builder/) for mapping by Tier IV, which uses Lanelet2 and Vectop Map data.
 
 
 ---
 
 ## Third part
-## 5.3. Use Case: Roborace
-- Using Autoware components
+## [5.3. Use Case: Roborace](https://youtu.be/nTI4fnn2tuU?t=3720)
+### 5.3.1. Motivation for Using Autoware
+### 5.3.2. Autoware Usage in a PhD Thesis
+### 5.3.3. Autoware Usage in an Autonomous Racing Car
+
+
+
