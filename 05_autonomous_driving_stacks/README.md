@@ -1,7 +1,7 @@
 # Lecture 05: Autonomous Driving Stack
 [![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto)
 
-This lecture is provided by [Daniel Watzenig](https://www.linkedin.com/in/daniel-watzenig-4a0b985) and by [Markus Schratter](https://www.linkedin.com/in/markusschratter), from Autonomous Stuff. The lecture is available in YouTube:
+This lecture is provided by [Daniel Watzenig](https://www.linkedin.com/in/daniel-watzenig-4a0b985) and by [Markus Schratter](https://www.linkedin.com/in/markusschratter), from the Virtual Vehicle Research Center (Technical University of Graz). The lecture is available in YouTube:
 
 [![Lecture video](https://img.youtube.com/vi/nTI4fnn2tuU/0.jpg)](https://www.youtube.com/watch?v=nTI4fnn2tuU&list=PLL57Sz4fhxLpCXgN0lvCF7aHAlRA5FoFr&index=5)
 
