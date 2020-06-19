@@ -169,10 +169,28 @@ Finally, **mapping** is used with two purposes: 1) mapping for localization (wit
 ---
 
 ## Third part
-## [5.3. Use Case: Roborace](https://youtu.be/nTI4fnn2tuU?t=3720)
-### 5.3.1. Motivation for Using Autoware
-### 5.3.2. Autoware Usage in a PhD Thesis
-### 5.3.3. Autoware Usage in an Autonomous Racing Car
+## [5.3. Use Cases](https://youtu.be/nTI4fnn2tuU?t=3720)
+### [5.3.1. Autoware Usage in Academical Research](https://youtu.be/nTI4fnn2tuU?t=3750)
+AD is not an easy task because it requires all the layers of the AD stack (perception, localization, high and low level planning, control, etc.) to be implemented and integrated, as well as complex modifications to the vehicle to be used. It also requires a lot of other side components such as calibration, monitoring, fault detection, etc.
 
+In the academical research context, developing a whole AV is even harder because the purpose of the research groups are usually make small advancements in particular areas, not to build a fully functional AV, as could be the target of the research division of an industrial company. However, for academical research, it is still almost essential in many cases to **have the full AD stack running** to test and evaluate their work. This can be achieved by using Autoware, which provides components of the full stack.
+
+The availability of **simulation environments** is also key. Gazebo, LGSVL and CARLA provide interfaces for Autoware and allow researchers to test their ideas before trying in a real vehicle or even remove the need of using a real platform. Additional advantages of these simulators are that they are open source and the big community they have.
+
+It is helpful to **introduce students** smoothly in complex topics abstracting parts that they do not need to know about yet.
+
+### [5.3.2. Autoware Usage in a PhD Thesis](https://youtu.be/nTI4fnn2tuU?t=4090)
+The example thesis is about critical situations with pedestrians when using AVs. It implements a collision avoidance system for extreme unpredicted situations, such as a pedestrian jumping from behind a parked car or when the object prediction module fails. It gets as inputs the traffic participants, the HD map and the trajectory from the AD stack. The output will be an emergency intervention (if needed) that may consist in brakin, a maneuver, etc.
+
+Using Autoware instead of vanilla ROS made it easier to integrate the project in a real vehicle. The used Autoware components were the mapping (point cloud and HD maps), the localization (LiDAR-based and EKF localizer), the mission/gloabl planner and the motion planning (lane planner and open planner).
+
+### [5.3.3. Autoware Usage in an Autonomous Racing Car](https://youtu.be/nTI4fnn2tuU?t=4860)
+The final usecase is about autonomous racing. In particular, the [Autonomous Racig Graz](https://autonomousracing.ai/) team of the Roborace. So far, they participated in a LiDAR localization challenge and a regular race.
+
+Regarding the **LiDAR-based localization**, the usage of Autoware was chosen because of the experience the team already had in the usage of Autoware's NDT. Moreover, it served as a *test* for further usages at higher speeds and it is a reliable and robust method. NDT was used for both the localization and the track point cloud mapping. The pointcloud made it easy to recognise the curves and overall circuit, so it could be used to draw the optimal racing line (which was done using this [TUM tool](https://github.com/TUMFTM/global_racetrajectory_optimization).
+
+As non-Autoware related additional notes, for this application, the LiDAR measurements were filtered using a voxel grid to enlight the computation and the measurement distortions were corrected according to how the car is being driven. This is done by storing a the time stamp when each point was measured, given that, specially at high speeds, by the time the LiDAR finishes one scan, the car may have advanced a relevant distance. This needs to be taken into account in order to achieve good precision levels when it comes to localization. Further details on this will be published in the IEEE International Instrumentation and Measurement Technology Conference of 2020, in the *Increased Accuracy For Fast Moving LiDARS: Correction of Distorted Point Clouds* paper.
+
+For reference, NDT achieved errors that were most of the time below 20 cm, being over 10 most of the time. This metric was obtained using the high-precission GPS localization as the ground truth. The CPU mode of NDT was used and high CPU loads were detected when driving at accelerations of more than 1g.
 
 
