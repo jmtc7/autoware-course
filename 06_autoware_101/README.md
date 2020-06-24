@@ -31,14 +31,41 @@ Its **current status** is supporting ROS Melodic and there is no intention to su
 Finally, about its **future**, the last major release will be the 1.15.0, scheduled for December 2020. From this point until December 2022 it will only be maintained, date in which the project will be shutted down to focus more in Autoware.Auto.
 
 ## [6.3. History, Present and Future of Autoware.Auto](https://youtu.be/eSHHmJrqpMU?t=845)
+It is also an open source Autonomous Vehicle (AV) stack, but it is based on ROS 2 and, therefore, uses the DDS middleware. Its development is done so it will support increassingly more complex Operational Design Domains (ODDs) and its modular API makes it very easy to integrate (potentially proprietary) extensions. Usage and documentation can be found in the [Autoware.Auto's GitLab](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto) and more information in the [Autoware.Auto webiste](https://www.autoware.auto). The Autoware.Auto development was done with much more *certifiable* and *industrial* values in mind, such as:
+
+- Safety
+- Code quality
+- Static memory allocation
+- Documentation
+- Modularity
 
 
-## 6.4. Architectural Overview of Autoware.Auto
+About its **history**, its development began in August 2018, mainly by Apex.AI with Tier IV. The first release (0.0.1) was in August 2019 and, currently, most of the members of the Autoware Foundation (AWF) are active on its development, which is managed by the Autoware Software Working Group (ASWG).
+
+The **current status** is targeting ROS 2 Dashing, but it is planned to support ROS 2 Foxy after the AVP release. It is also based in Docker, using ADE as the development environment, increasing the repeatability and easiness of usage. The Docker containers natively support amd64 and arm64. The first and current ODD is Autonomous Valet Parking (AVP). Autoware.Auto has not reached yet the amount of features present in Autoware.AI, but offers the following:
+
+- **Sensing**: Even ROS drivers and messages can be used, Autoware.Auto supports specifically the following sensors:
+  - PointGrey and FLIR cameras
+  - Xsens GPS and IMUs
+  - Velodyne Puck, Puck LITE and Puck Hi-Res sensors
+- **Localization**: NDT Matching
+- **Ground Filtering**: Ray Classifier.
+- **Object Detectoin**: With LiDAR data and voxel grid or euclidean clustering.
+- **Vehicle Interface**: Currently it is done through Linux SocketCAN or with interfaces specific for each simulator.
+- **Motion Control**: Pure pursuit and MPC.
+
+Regarding the near **future** of Autoware.Auto, after the current 3rd milestone in the current ODD, the things to come are:
+
+- **4th milestone**: On-vehicle integration consisting on switching from simulation to real vehicle (configure HW, add drivers and interfaces, etc.).
+- **5th milestone**: AVP demo, which will consist on a week-long hackathon after which it is planned to have a mobile app to interact with the vehicle.
+- **1st clean-up milestone**: After the AVP ODD is completed, missing documentation will be added and best-practices that were not taken into account before will be implemented in the already finished code.
+- **Move back to GitHub**, as it was done with Autoware.AI.
 
 
-## 6.5. Autoware.Auto's Development Process, Contributions and Support
-### 6.5.1. ODD-Based Development Cycle
-### 6.5.2. How to Contribute
-### 6.5.3. Where to Get Support
+
+## [6.4. Autoware.Auto's Development Process, Contributions and Support](https://youtu.be/eSHHmJrqpMU?t=1290)
+### 6.4.1. ODD-Based Development Cycle
+### 6.4.2. How to Contribute
+### 6.4.3. Where to Get Support
 
 
