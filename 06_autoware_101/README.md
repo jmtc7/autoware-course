@@ -62,10 +62,20 @@ Regarding the near **future** of Autoware.Auto, after the current 3rd milestone 
 - **Move back to GitHub**, as it was done with Autoware.AI.
 
 
-
 ## [6.4. Autoware.Auto's Development Process, Contributions and Support](https://youtu.be/eSHHmJrqpMU?t=1290)
-### 6.4.1. ODD-Based Development Cycle
-### 6.4.2. How to Contribute
-### 6.4.3. Where to Get Support
+### [6.4.1. ODD-Based Development Cycle](https://youtu.be/eSHHmJrqpMU?t=1300)
+The ODD definition process starts with the AWF's Technical Steering Committee defining the ODD to target. Next, the ODD Working Group (yet to be formed) specifies the scenarios required to support the specified ODD. Next, the Technical Steering Committee chooses the next ODD and so on. While a new ODD is being chosen, the previous one will be developed by the HW and SW development groups.
+
+### [6.4.2. How to Contribute](https://youtu.be/eSHHmJrqpMU?t=1395)
+In order to contribute to the AWF's projects, these are the things to do:
+
+- Follow the development on [GitLab](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/issues).
+- Learn about contributing to open source with this [GitHub guide](https://github.com/firstcontributions/first-contributions).
+- Join the [Autoware Slack](http://autoware.herokuapp.com).
+- Talk to the current contributors on [ROS Discurse](https://discourse.ros.org/c/autoware).
+- Join the Foundation (as a member organization) emailing `auto@autoware.org`.
+
+### [6.4.3. Where to Get Support](https://youtu.be/eSHHmJrqpMU?t=1465)
+The first place to search for support is the documentation. There are specific versions for [Autoware.AI](https://github.com/Autoware-AI/autoware.ai/wiki) and [Autoware.Auto](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto). The next step would be to ask in the Autoware-specific [ROS Answers page](https://answers.ros.org/questions/scope:all/sort:activity-desc/tags:autoware/page:1/). Finally, **only if it is a confirmed bug or feature request**, an issue could be filed in [Autoware.Auto's GitLab](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto/-/issues).
 
 
