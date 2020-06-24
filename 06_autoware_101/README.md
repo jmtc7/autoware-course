@@ -1,4 +1,4 @@
-# Lecture 06: Autoware 101: History and Future of The Autoware Foundation
+# Lecture 06: Autoware 101. History and Future of The Autoware Foundation
 [![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto)
 
 This lecture is provided by [Josh Whitley](https://www.linkedin.com/in/maximus5684), Software Architect at the Autoware Foundation. The lecture is available in YouTube:
@@ -7,7 +7,7 @@ This lecture is provided by [Josh Whitley](https://www.linkedin.com/in/maximus56
 
 The lecture will be about The Autoware Foundation and its to primary projects: Autoware.AI and Autoware.Auto.
 
-The provided PDFs can be found in the Apex.AI's [autowareclass2020 repository](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/06_Autoware_101/Autoware_101.pdf), in GitLab. The PDF is included in the *resources* folder of this directory.
+The provided PDF can be found in the Apex.AI's [autowareclass2020 repository](https://gitlab.com/ApexAI/autowareclass2020/-/blob/master/lectures/06_Autoware_101/Autoware_101.pdf), in GitLab. The PDF is included in the *resources* folder of this directory.
 
 ## [6.1. The Autoware Foundation Structure](https://youtu.be/eSHHmJrqpMU?t=70)
 Autoware.AI was started in 2015 by Shinpei Kato at Nagoya University and now (2020) is supported by the largest AD open source community while being used by more than a 100 companies and run on more than 30 vehicles in more than 20 countries. Autoware is used by automotive OEMs to develop Mobility as a Service (MaaS) and has been qualified to run on AVs on public japanese roads since 2017. More information can be found in the [Autoware Foundation website](https://www.autoware.org).
