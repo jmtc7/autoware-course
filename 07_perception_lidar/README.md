@@ -1,7 +1,7 @@
 # Lecture 07: LiDAR-Based Object Detection
 [![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto)
 
-This lecture is provided by [Christopher HO](https://www.linkedin.com/in/christopher-ho-0608683a/) and [Gowtham RANGANATHAN](https://www.linkedin.com/in/gowtham-ranganathan-37a60782/), Software Engineers at Apex.AI. The lecture is available in YouTube:
+This lecture is provided by [Christopher HO](https://www.linkedin.com/in/christopher-ho-0608683a/) and [Gowtham RANGANATHAN](https://www.linkedin.com/in/gowtham-ranganathan-37a60782/), Principal and Senior Software Engineers at Apex.AI, respectively. The lecture is available in YouTube:
 
 [![Lecture video](https://img.youtube.com/vi/xSGCpb24dhI/0.jpg)](https://www.youtube.com/watch?v=xSGCpb24dhI&list=PLL57Sz4fhxLpCXgN0lvCF7aHAlRA5FoFr&index=8)
 
@@ -123,9 +123,56 @@ for ray in rays:
 
 
 ## [7.5. Clustering for Object Detection](https://youtu.be/xSGCpb24dhI?t=1995)
+This step is needed to segmentate the input nonground point cloud into different objects to be able to evaluate possible collisions, predict individual behaviors, work with more manegable ammounts of data, etc. The clustering is done by grouping points together based in some metric.
 
-## 7.6. Shape Extraction
+There are not many clustering techniques for point clouds. Some of those approaches are:
+- **Voxel-based** region growing technique.
+- **Image space-based** region growing technique based on the angle metric.
+- **Euclidean Clustering**, a region growing technique in the Euclidean Space based on the euclidean distance metric. This is the one used in Autoware.Auto and these are its steps:
+   1. Creating a KD-Tree represeentation for the input point cloud `P`.
+   2. Set up an empty list of clusters `C` and a queue `Q` of the points that need to be checked.
+   3. For every point `p_i` in the input `P`, perform:
+      1. Add `p_i` to the queue `Q`.
+      2. For every point `p_i` in `Q`, do:
+         1. Search for the set `P_k` of neighbors of `p_i` in a sphere with radius `r < d_th`.
+         2. For every neighbor `p_ki` in `P_k`, check if it has already been processed and, if not, add it to `Q`.
+      3. When the list of all points in `Q` has been processed, add `Q` to the list `C` and reset `Q`.
+   4. The algorithm will end when all the points `p_i` in `P` have been processed, being part of one of the clusters in `C`.
 
-## 7.7. Using Detected Objects
+Useful references are the paper [Semantic 3D Object Maps for Everyday Manipulation in Human Living Environments](https://www.researchgate.net/publication/36420830_Semantic_3D_Object_Maps_for_Everyday_Manipulation_in_Human_Living_Environments) and the [Point Cloud Library (PCL)](https://pointclouds.org).
 
-## 7.8. Lab: The Autoware.Auto Object Detection Stack
+To sum it up, the Euclidean Clustering algorithm starts with an empty cluster, adds a point to it, finds the points *near* this point and adds them to the cluster, searching neighbours of all the points in the cluster. When there are no more points to be processed in the cluster, it will be accepted or rejected depending on how many points it contains. This will be repeated for another point outside the cluster until every point in the input cloud belongs to a cluster. It can be understood as a graph where each point is a vertex and each cluster will be a connected sub-graph. Two vertices will be connected if they are *near* to one another.
+
+Given that the algorithm searches for all the neighbors within a certain distance of the current point (near neighbors), not just the nearest one, the optimal data structure is an **integer lattice** or **spatial hash** (instead of a KD-Tree, which would be optimal for a nearest neighbor search). This structure consists in dividing the space into voxels, finding the voxel where the current point is in, find the adjacent voxels to it and iterate over all the points contained in the current or adjacent voxels, which will be included in the cluster. Using this structure instead of a KD-Tree makes it possible to reduce the algorithm complexity from *K * log(n)* to *K * n*, where *n* is the number of points and *K* the number of neighbours. Going from a linearithmic to a linear complexity is a big deal because the point clouds used in AVs usually contains a lot of points (*n* ~= [10k, 1M]).
+
+As additional notes, Autoware.AI performs this in over 100 ms with aggressive downsampling and Autoware.Auto achieves 10 ms without downsampling.
+
+
+## [7.6. Shape Extraction](https://youtu.be/xSGCpb24dhI?t=2570)
+It is necessary because it is hard to work, transform and communicate using the raw clusters/blobs extracted from the last step. Moreover, their size is big and unbounded. 
+
+There are several ways of extracting a form, such as trying to bound a pointcloud in a circle, axis-aligned bounding box (BB), oriented BB or a convex hull. The more to the right of the list, the better they represent the object but the harder to compute and to perform collision/overlap checking. This is why oriented BBs are usually the chosen option. There are several ways of **computing oriented BBs**:
+
+- **Rotating Calipers**: Compute the 2D convex hull of the object to generate a 2D BB with minimum perimeter or area. Since it only considers boundary points, it is very sensitive to noise. Moreover, there are shapes that will lead to bad results, such as if two sides of a car are seen (L-shaped points), the resulting BB will be in a diagonal of the car, including a lot of empty space and leaving half of the car outside of the box.
+- **Principal Component Analysis (PCA)**: Use PCA to compute the major and minor axes of the BB. It will be more robust to noise but will still fail in cases such as the L-shaped sets of points.
+- **Optimization Approaches**: The approach of Shen et al. searches for a box and a partition that best fits the L-shape. However it relies on a single scanning LiDAR (so it will not work well when using more than one LiDAR). Zhang et al. relaxes this assumption, but introduces discretization error.
+
+Autoware.Auto uses the approach of Shen et al. with a few pre-processing steps. First, the principal component of the blob is computed, then the points are sorted along this axis, pretending all the points came from a single scan of a LiDAR, so Shen's algorithm can be used as normal. This makes the algorithm more expensive, but it avoids the discretization error and works on every poipnt cloud.
+
+As additional notes, other approaches for shape extraction are:
+
+- **Convex Hulls**: It is only loosely bounded in memory (being the upper bound the number of points in the point cloud, since every one of them could be from the edge of the object). This makes it quite inconvinient to move data. Autoware.Auto, however, implements the Monotone Chain algorithm, which is of this type.
+- **Minimum Volume Bounding Ellipsoids**: It is similar to use oriented BBs, but they require to solve an optimization problem to perform collision checking. An example is the one proposed by Kumar and Yildirim. Its advantage is that ellipses fit better than BBs in optimization frameworks, avoiding things such as looking at second order cones.
+- **Super Quadratics** (i.e. Pascoal et al): It allows representing complex shapes, such as concave ones, but it requires to solve a hard optimization problem.
+
+Currently, the open problem is how to handle large concave objects, such as the inside of a small garage.
+
+
+## [7.7. Using Detected Objects](https://youtu.be/xSGCpb24dhI?t=3215)
+
+
+
+## [7.8. Lab: The Autoware.Auto Object Detection Stack](https://youtu.be/xSGCpb24dhI?t=3470)
+
+
+
