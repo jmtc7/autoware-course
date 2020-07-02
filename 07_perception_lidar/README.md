@@ -1,7 +1,7 @@
 # Lecture 07: LiDAR-Based Object Detection
 [![Autoware.Auto badge](https://img.shields.io/badge/Autoware-Auto-orange.svg)](https://www.autoware.auto)
 
-This lecture is provided by [Christopher HO](https://www.linkedin.com/in/christopher-ho-0608683a/) and [Gowtham RANGANATHAN](https://www.linkedin.com/in/gowtham-ranganathan-37a60782/), Principal and Senior Software Engineers at Apex.AI, respectively. The lecture is available in YouTube:
+This lecture is provided by [Christopher HO](https://www.linkedin.com/in/christopher-ho-0608683a) and [Gowtham RANGANATHAN](https://www.linkedin.com/in/gowtham-ranganathan-37a60782), Principal and Senior Software Engineers at Apex.AI, respectively. The lecture is available in YouTube:
 
 [![Lecture video](https://img.youtube.com/vi/xSGCpb24dhI/0.jpg)](https://www.youtube.com/watch?v=xSGCpb24dhI&list=PLL57Sz4fhxLpCXgN0lvCF7aHAlRA5FoFr&index=8)
 
@@ -180,6 +180,42 @@ The biggest use cases of object detection are:
 
 
 ## [7.8. Lab: The Autoware.Auto Object Detection Stack](https://youtu.be/xSGCpb24dhI?t=3470)
+[Gowtham RANGANATHAN](https://www.linkedin.com/in/gowtham-ranganathan-37a60782) will demonstrate how to use the perception stack using the LGSVL simulator. The simulator setup is explained in the [*Tutorials* section of the Autoware.Auto documentation](https://autowarefoundation.gitlab.io/autoware.auto/AutowareAuto/lgsvl.html), which can be accesed from the [*Documentation* tab of the Autoware.Auto website](https://www.autoware.auto). To run the simulator, the requirements are:
+
+- ADE 4.2.0 or later
+- NVidia graphics card
+- Native GPU support installed if using Docker engine 19.03 or later
+- nvidia-docker2 installed if using Docker engine below 19.03
+
+In order to run the simulator, the following orders should be executed from inside the `~/adehome/AutowareAuto/` directory, which should be in our system after the [Lecture 01](https://github.com/jmtc7/autoware-course/tree/master/01_development_environment):
+
+```bash
+$ source .aderc-lgsvl  # Source the LGSVL-specific ADE rc file
+$ ade start --enter  # Start and enter the ADE environment
+ade$ RMW_IMPLEMENTATION=rmw_cyclonedds_cpp /opt/lgsvl/simulator  # Start the simulator
+```
+
+A window will appear, offering a button to open a browser. However, it does not work, so all the simulation configuration can be accessed by opening manually [http://127.0.0.1:8080](http://127.0.0.1:8080) in a browser. It is necessary to sign up if its the first time using it. Next, tabs to configure maps, vehicles, clusters and simulations will be available. The minimum required things are having one valid map and one valid vehicle. Instructions in how to import them can be found in the [LGSVL tutorial](https://autowarefoundation.gitlab.io/autoware.auto/AutowareAuto/lgsvl.html) of the Autoware.Auto documentation. The steps are:
+
+- Click the *Add new* button in the *Simulations* tab.
+- Enter a name for the simulation.
+- Go to the *Map & Vehicles* tab.
+- Select a map from the drop down menu. If none is available, [this guide](https://www.lgsvlsimulator.com/docs/maps-tab/#where-to-find-maps) shall be followed. For example, the *Borregas Avenue* map can be downloaded [here](https://content.lgsvlsimulator.com/maps/borregasave).
+- Select the *Lexus2016RXHybrid* from the drop down menu. Again, if none is available, [this guide](https://www.lgsvlsimulator.com/docs/vehicles-tab) will help. The *Lexus XR 2016* model can be downloaded [here](https://content.lgsvlsimulator.com/vehicles/awflexusrx2016).
+- Enter *127.0.0.1:9090* for the deffault setting in the *bridge connection* box.
+- Click the *submit* button.
 
 
+The configuration also allows further configurations regarding traffic and weather conditions. Once the simulator itself is opened, the button on the bottom left will open a window with all the controls and shorcuts (the basics is: arrows for steering, accelerating and braking).
+
+Once the simulator is opened, it will be posible to access the ROS messages that are being published from another terminal session (from inside the ADE environment). It is possible to check that everything is woking by listing the active topics (`ade$ ros2 topic list`).
+
+Once having all the data available, it is now possible to use the previously explained perception pipeline. To do so, a default demo will be used by executing:
+
+```bash
+ade$ source /opt/AutowareAuto/setup.bash
+ade$ ros2 launch autoware_demos lidar_bounding_boxes_lgsvl.launch.py
+```
+
+This launch file will run all the nodes of the perception stack and open RViz to visualize the ego vehicle, the frames, the LiDAR data and the bounding boxes. It is possible to remove the ground points choosing which point clouds to show. It is possible to use the ROS2 tools to see which nodes and topics are active after using the launch file.
 
