@@ -200,8 +200,8 @@ A window will appear, offering a button to open a browser. However, it does not 
 - Click the *Add new* button in the *Simulations* tab.
 - Enter a name for the simulation.
 - Go to the *Map & Vehicles* tab.
-- Select a map from the drop down menu. If none is available, [this guide](https://www.lgsvlsimulator.com/docs/maps-tab/#where-to-find-maps) shall be followed. For example, the *Borregas Avenue* map can be downloaded [here](https://content.lgsvlsimulator.com/maps/borregasave).
-- Select the *Lexus2016RXHybrid* from the drop down menu. Again, if none is available, [this guide](https://www.lgsvlsimulator.com/docs/vehicles-tab) will help. The *Lexus XR 2016* model can be downloaded [here](https://content.lgsvlsimulator.com/vehicles/awflexusrx2016).
+- Select a map from the drop down menu. If none is available, [this guide](https://www.lgsvlsimulator.com/docs/maps-tab/#where-to-find-maps) shall be followed. To solve it, we will add a new map from the *Maps* tab by chosing a name and pasting the URL of the *Asset Bundle* hyper-reference of one of the [provided maps](https://content.lgsvlsimulator.com/maps).
+- Select the *Lexus2016RXHybrid* from the drop down menu. Again, if none is available, [this guide](https://www.lgsvlsimulator.com/docs/vehicles-tab) will help. As explained in the documentation, it will be necessary to add the asset URL of the car, chose the *ROS2 Native* bridge type and add the content of *lgsvl-sensors.json* (in the root of the AutowareAuto repository) in the *sensors* box.
 - Enter *127.0.0.1:9090* for the deffault setting in the *bridge connection* box.
 - Click the *submit* button.
 
