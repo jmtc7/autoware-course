@@ -169,7 +169,14 @@ Currently, the open problem is how to handle large concave objects, such as the 
 
 
 ## [7.7. Using Detected Objects](https://youtu.be/xSGCpb24dhI?t=3215)
+The biggest use cases of object detection are:
 
+- **Classification**, which is helpful for predicting the behaviors of the other traffic participants. It can also influence the behavior planning of the system. The detected clusters/blobs can be classified combining the information with camera data or other classifiers.
+- **Preprocessing**: The clusters can be used as Regions of Interest (RoIs), which can be used for classification, localization landmarks, marker/signals detection/classification, etc.
+- **Tracking**: It consist in fusing instantaneous detections over time. The main types are:
+  - Tracking-by-assignment, such as data associations method (hungarian algorithm, GNN, etc.) and state estimation (Kalman Filter, Particle Filter, etc.)
+  - Combined tracking methods, such as the Multiple Hypothesis Tracking by Khan et al and Kim et al.
+- **Collision detection**: The main usage of object detection. Algorithms implementing it are SAT and GJK (+EPA). There are several ways of using it, as exposed in motion planning literature, such as Mirtich (1997) or Lin and Gottschalk.
 
 
 ## [7.8. Lab: The Autoware.Auto Object Detection Stack](https://youtu.be/xSGCpb24dhI?t=3470)
