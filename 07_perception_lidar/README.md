@@ -219,3 +219,7 @@ ade$ ros2 launch autoware_demos lidar_bounding_boxes_lgsvl.launch.py
 
 This launch file will run all the nodes of the perception stack and open RViz to visualize the ego vehicle, the frames, the LiDAR data and the bounding boxes. It is possible to remove the ground points choosing which point clouds to show. It is possible to use the ROS2 tools to see which nodes and topics are active after using the launch file.
 
+```
+NOTE: It is essential to make sure the packages are built (executing 'colcon build' from the root of the cloned repository). The building of 'lanelet2' metapackage may fail. It can be solved by leaving in all the packages it contains 'catkin' as its only build dependency (commenting the other one in their 'package.xml' files).
+```
+
