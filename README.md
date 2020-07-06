@@ -23,7 +23,7 @@ This course is held by [Apex.AI](https://www.apex.ai/autoware-course) and [TheCo
 - [Lecture 05](https://github.com/jmtc7/autoware-course/tree/master/05_autonomous_driving_stacks): Autonomous Driving Stacks and Autoware Use Cases: [Virtual Vehicle Research Center (TU Graz)](https://www.tugraz.at/en/home)
 - [Lecture 06](https://github.com/jmtc7/autoware-course/tree/master/06_autoware_101): Autoware 101: [Autoware Foundation](https://www.autoware.org)
 - [Lecture 07](https://github.com/jmtc7/autoware-course/tree/master/07_perception_lidar): Object Perception LiDAR: [Apex.AI](https://www.apex.ai)
-- Lecture 08: Object Perception Camera: [FH AAchen University](https://www.fh-aachen.de/en)
+- [Lecture 08](https://github.com/jmtc7/autoware-course/tree/master/08_perception_camera): Object Perception Camera: [FH AAchen University](https://www.fh-aachen.de/en)
 - Lecture 09: Object Perception Radar: [FH AAchen University](https://www.fh-aachen.de/en)
 - Lecture 10: State Estimation for Localization (Sensor Fusion): [Autoware Foundation](https://www.autoware.org)
 - Lecture 11: LGSVL Simulation: [LGSVL](http://lge.com)
