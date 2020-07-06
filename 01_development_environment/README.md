@@ -78,7 +78,7 @@ else
 fi
 ```
 
-If the host system has a NVIDIA GPU installed, appart of its driver, it will be necessary to install **NVIDIA Docker**, as explained in its [official repository](sudo apt-install byobu). The commands to execute to install it in Ubuntu/Debian systems are:
+If the host system has a NVIDIA GPU installed, appart of its driver, it will be necessary to install **NVIDIA Docker**, as explained in its [official repository](https://github.com/NVIDIA/nvidia-docker). The commands to execute to install it in Ubuntu/Debian systems are:
 
 ```bash
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
