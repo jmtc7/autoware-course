@@ -38,12 +38,28 @@ It is introduced when lenses are used but, since they are systematic error, all 
 
 
 ## 8.2. Camera Calibration (00:11:55)
-### 8.2.1. Installing the Camera System
-### 8.2.2. Calibration Procedure - The Chessboard Pattern
-### 8.2.3. Calculation of Intrinsic and Extrinsic Parameters
+Calibrating a camera or a set of them will provide us with the intrinsic and extrinsic parameters, allowing us to know how 3D points are projected into the images our system si recieving, allowing us to know where the image points are relative to the vehicle.
+
+### 8.2.1. Goal of the Calibration (00:13:15)
+An useful application of having a calibrated monocular camera in an Autonomous Vehicle (AV) is the ability to get a bird's eye view of the road and even other traffic participants. It is possible to use the intrinsic and extrinsic parameters to warp the image and get this top-down perspective of the road using just a picture taken from the front part of the ego vehicle. Some applications of this bird's eye view are:
+
+- Gather road information, such as painted traffic signs or different types of lane lines.
+- Estimating the position of the ego vehicle in the current lane.
+- Estimate the ego car's position relative to other cars or lanes (without a real scale, though).
+
+### 8.2.2. Calibration Procedure (00:17:05)
+The Z. Zhang's principle consists in using a checkboard pattern to detect the corners between the black and white squares (which is very easy due to the very high contrast) in a set of pictures containing different scales, vertical and horizontal positions and angles between the pattern and the camera. Since the cell size will be known, the corner detections can be used to know how does the camera deforms the real pattern, which is used to compute the intrinsic parameters (focal length, skew and image center) and distortion coefficients (usually radial and tangential). The Matlab/Simulink toolbox, as well as the OpenCV library and many others toolboxes provides ways of doing this very easily.
+
+After having the intrinsic parameters and the distortion coefficients, we can undistort the images and proceed with the calibration of the extrinsic paramters. Assuming that we want to transform the image to a top-down perspective, we will lay the pattern in the floor and will get the rotation and traslation needed to get this new chessboard position. It is also possible to set the chessboard at a known angle of the ground (e.g. 90º) and add this angle to the obtained transformation later. This last approach will make it easier to detect the corners.
+
+### 8.2.3. Using the Calibration (00:24:05)
+Even we have all the necessary data to transform images in brid's eye view, this operation is very computationally expensive, specially if we want to do this with every frame of a video. This is why what is usually done is detecting objects in the untransformed image, getting bounding boxes (BBs) of the Regions of Interest (RoIs) and only transforming these pixels.
+
+Other things to keep in mind when using this technique is the wobbling of the car (while braking or accelerating), blurrness at high speeds or hilly roads. For all these situations, the extrinsic parameters must be adapted to achieve precise results.
 
 
-## 8.3. Neural Networks for Camera-Based Object Detection
+
+## 8.3. Neural Networks for Camera-Based Object Detection (00:27:20)
 ### 8.3.1. Neural Networks Basics
 ### 8.3.2. Examples of DNNs
 - YOLO
