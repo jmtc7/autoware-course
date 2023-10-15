@@ -93,14 +93,32 @@ Some great ressources to learn more about Computer Vision are the books of [Comp
 
 
 
-## 8.4. [Available Toolboxes (00:41:47)](https://youtu.be/OtjTa-meJ-E?si=XtSPSJVQEU8k2blS&t=2507)
-### 8.4.1. OpenCV: Basic Algorithm Toolbox
-### 8.4.2. CUDA: GPU Deployment Toolbox
-### 8.4.3. Higher Level Integrated Toolboxes
-- NVIDIA AD Toolbox
+## [8.4. Available Toolboxes (00:41:47)](https://youtu.be/OtjTa-meJ-E?si=XtSPSJVQEU8k2blS&t=2507)
+This section will go trough some of the available toolboxes, including CUDA, Matlab and OpenCV and, at the end, they will be compared.
+
+### [8.4.1. CUDA: GPU Deployment Toolbox (00:42:14)](https://youtu.be/OtjTa-meJ-E?si=NVoMBHQwwXxuT-ow&t=2534)
+It provides parallel, high performance computing based on GPUs, which is often very useful for Computer Vision applications since the convolutional operations are completelly independent, and there is a need to perform many of them in each image. One of the main GPU providers is NVidia, and their GPUs can be programmed using their [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit). NVidia is also active in the Automotive field.
+
+CUDA is integrated with many other frameworks and toolboxes, including OpenCV. NVidia provides [documentation](https://developer.nvidia.com/cuda-zone) and [code samples](https://developer.nvidia.com/cuda-code-samples) including edge detection, histograms, optical flow, etc. The code samples are under a permissive license so they can be used in our own applications.
+
+### [8.4.2. Matlab and Simulink's Computer Vision Toolbox (00:44:34)](https://youtu.be/OtjTa-meJ-E?si=pvc-H_MoQtC9RYzz&t=2674)
+The Matlab and Simulink's [Computer Vision Toolbox](https://www.mathworks.com/products/computer-vision.html) features many utils, including Deep and Machine Learning, LiDAR and 3D pointclouds processing, camera calibration, 3D and stereo vision, feature detection, extraction and matching, object tracking, motion estimation, an OpenCV interface, etc.
+
+This toolbox requires Matlab and the Image Processing Toolbox. There are some additional recommendations to use the full potential of the toolbox, such as the Image Aquisition Toolbox, the Statistics + Machine Learning Toolbox (rcnnObjectDetector and imageCategoryClassifier), the Parallel Computing Toolbox (for GPU support) and the Deep Learning Toolbox.
+
+They provide [examples](https://www.mathworks.com/help/vision/examples), a [tutorial for ROS integration](https://www.mathworks.com/help/ros/ug/generate-a-standalone-ros-node-from-simulink.html) and an additional [toolbox for automated driving](https://www.mathworks.com/products/automated-driving.html).
+
+### [8.4.3. OpenCV (00:47:10)](https://youtu.be/OtjTa-meJ-E?si=U9cPHyLswJxY0zte&t=2830)
+[OpenCV](https://opencv.org/) is an open source Computer Vision and Machine Learning library with basic data structures, functions, standard methods and more than 2500 optimized algorithms. It has interfaces for C++, Python, Matlab and Java and support for Windows, Linux, Android and Mac. It also offers an [extensive documentation](https://docs.opencv.org/4.8.0/) and [tutorials](https://docs.opencv.org/4.x/d9/df8/tutorial_root.html).
+
+### [8.4.4. Comparison (00:48:29)](https://youtu.be/OtjTa-meJ-E?si=Z1bzi_-WMcSKyiho&t=2909)
+Trough this section we saw how there are many available toolboxes, each of them offering a range of ready-to-use algorithms and tools. Their pros and cons are:
+  - **CUDA** allows to make use of GPUs.
+  - **Matlab** is usually used to prototype, but it can also be used for coding and generating ROS nodes.
+  - **OpenCV** is open source, widely used and free, with many interfaces. It will be the chosen option for this course from now on.
 
 
-## 8.5. Use Case: Lane Detection
+## [8.5. Use Case: Lane Detection (00:49:45)](https://youtu.be/OtjTa-meJ-E?si=p0LKH25w5MzhFgoY&t=2985)
 ### 8.5.1. Lane Detection Basics
 ### 8.5.2. Polynomial Lane-Fitting for Data Reduction
 ### 8.5.3. Step-by-Step Hands-on
