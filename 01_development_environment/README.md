@@ -102,7 +102,7 @@ $ ade start
 $ ade enter
 ```
 
-NOTE: when running `ade start`, an error telling that the permisson to connect ot the Docker daemon socket has been denied. As explained [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket), the solution is to create a *docker* group and add the user to it. The error should be fixed after logging out and in again.
+NOTE: when running `ade start`, an error telling that the permisson to connect ot the Docker daemon socket has been denied. As explained [here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket), the solution is to create a *docker* group and add the user to it. The error should be fixed after logging out and in again. Another options is to, as explained [here](https://stackoverflow.com/questions/51342810/how-to-fix-dial-unix-var-run-docker-sock-connect-permission-denied-when-gro), run `sudo setfacl --modify user:<user name or ID>:rw /var/run/docker.sock`, which wouldn't need any reboot for it to work.
 
 ### [ROS 2](https://youtu.be/XTmlhvlmcf8?t=1875) and [Autoware.Auto](https://youtu.be/XTmlhvlmcf8?t=2070) Installations
 Autoware.Auto uses **ROS 2** Dashing, which is already installed inside ADE (installed in /opt/ros/dashing/). The installation can be confirmed by running `ade$ ros2 -h`, and a basic talker/listener example can be executed by using:
